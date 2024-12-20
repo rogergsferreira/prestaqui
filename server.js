@@ -33,7 +33,7 @@ db.connect((err) => {
 
 // Register route
 app.post('/register', async (req, res) => {
-    const { user_email, user_password, user_name, user_phone, user_cep, user_state, user_city, user_neighborhood, user_address_line, user_complement, user_avatar_path, userType } = req.body;
+    const { email, password, name, phone, cep, state, city, neighborhood, street_address, complement, avatar_path, userType } = req.body;
 
     // Validate userType
     if (userType !== 'service_provider' && userType !== 'customer') {
@@ -41,12 +41,12 @@ app.post('/register', async (req, res) => {
     }
 
     try {
-        const hashedPassword = await bcrypt.hash(user_password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         db.query(
-            `INSERT INTO user (email, user_password, name_, phone, cep, state_, city, neighborhood, address_line, complement, avatar_path)
+            `INSERT INTO users (email, password, name, phone, cep, state, city, neighborhood, street_address, complement, avatar_path)
              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [user_email, hashedPassword, user_name, user_phone, user_cep, user_state, user_city, user_neighborhood, user_address_line, user_complement, user_avatar_path],
+            [email, hashedPassword, name, phone, cep, state, city, neighborhood, street_address, complement, avatar_path],
             (err, result) => {
                 if (err) throw err;
 
@@ -70,18 +70,18 @@ app.post('/register', async (req, res) => {
 
 // Login route
 app.post('/login', (req, res) => {
-    const { user_email, user_password, userType } = req.body;
+    const { email, password, userType } = req.body;
     const tableName = userType === 'service_provider' ? 'service_provider' : 'customer';
 
-    db.query(`SELECT * FROM user WHERE email = ?`, [email], async (err, result) => {
+    db.query(`SELECT * FROM users WHERE email = ?`, [email], async (err, result) => {
         if (err) throw err;
 
-        if (result.length === 0 || !(await bcrypt.compare(user_password, result[0].user_password))) {
+        if (result.length === 0 || !(await bcrypt.compare(password, result[0].password))) {
             return res.status(400).send('Invalid email or password');
         }
 
         const userId = result[0].id;
-        req.session.user = { id: userId, email, userType };
+        req.session.user = { id: userId, email: email, userType };
 
         db.query(`SELECT * FROM ${tableName} WHERE user_id = ?`, [userId], (err, result) => {
             if (err) throw err;
@@ -107,7 +107,7 @@ const authenticateSession = (req, res, next) => {
 app.get('/user', authenticateSession, (req, res) => {
     const { id } = req.session.user;
 
-    db.query(`SELECT * FROM user WHERE id = ?`, [id], (err, result) => {
+    db.query(`SELECT * FROM users WHERE id = ?`, [id], (err, result) => {
         if (err) throw err;
 
         if (result.length === 0) {
@@ -123,7 +123,7 @@ app.put('/user', authenticateSession, async (req, res) => {
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     const { id } = req.session.user;
 
-    db.query(`UPDATE user SET email = ?, user_password = ? WHERE id = ?`, [newEmail, hashedPassword, id], (err, result) => {
+    db.query(`UPDATE users SET email = ?, password = ? WHERE id = ?`, [newEmail, hashedPassword, id], (err, result) => {
         if (err) throw err;
 
         if (result.affectedRows === 0) {
@@ -134,7 +134,6 @@ app.put('/user', authenticateSession, async (req, res) => {
         res.send('User updated successfully');
     });
 });
-
 
 // Delete user
 app.delete('/user', authenticateSession, (req, res) => {
@@ -148,7 +147,7 @@ app.delete('/user', authenticateSession, (req, res) => {
             return res.status(404).send('User not found');
         }
 
-        db.query(`DELETE FROM user WHERE id = ?`, [id], (err, result) => {
+        db.query(`DELETE FROM users WHERE id = ?`, [id], (err, result) => {
             if (err) throw err;
 
             req.session.destroy((err) => {
