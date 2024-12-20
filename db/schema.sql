@@ -63,8 +63,8 @@ CREATE TABLE `scheduling` (
     FOREIGN KEY (`category_id`) REFERENCES `category`(`id`)
 );
 -- Índices para melhorar performance em consultas
-CREATE INDEX idx_service_provider_id ON `scheduling`(`service_provider_id`);
-CREATE INDEX idx_customer_id ON `scheduling`(`customer_id`);
-CREATE INDEX idx_category_id ON `has_category`(`category_id`);
-CREATE INDEX idx_user_id_service_provider ON `service_provider`(`user_id`);
-CREATE INDEX idx_user_id_customer ON `customer`(`user_id`);
+/* CREATE INDEX idx_service_provider_id ON `scheduling`(`service_provider_id`);
+ CREATE INDEX idx_customer_id ON `scheduling`(`customer_id`);
+ CREATE INDEX idx_category_id ON `has_category`(`category_id`);
+ CREATE INDEX idx_user_id_service_provider ON `service_provider`(`user_id`);
+ CREATE INDEX idx_user_id_customer ON `customer`(`user_id`); */
