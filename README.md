@@ -44,7 +44,7 @@ O painel principal conterá todas os agendamentos que ele possui e que estejam n
 
 **OBS**: Somente os clientes poderão criar agendamentos e somente o prestador terá a permissão para confirmá-los.
 
-O clente poderá cancelar o agendamento e também remarcá-lo. Sendo que, feito o reagendamento, o prestador precisará confirmá-lo para que, de fato, o reagendamento ocorra.
+O cliente poderá cancelar o agendamento e também remarcá-lo. Sendo que, feito o reagendamento, o prestador precisará confirmá-lo para que, de fato, o reagendamento ocorra.
 
 Além disso , o cliente também poderá visualizar o histórico dos agendamentos que já foram concluídos ou cancelados. Para isso, basta clicar em "<em>**HISTÓRICO**</em>".
 
@@ -77,7 +77,7 @@ Posteriormente, clicará em "<em>**AGENDAR VISITA**</em>":
 ![image](https://github.com/user-attachments/assets/ace8a1aa-4d7a-4bd2-865e-2fa1c74fae5d)
 
 
-4. Também é importante salientar que, o usuário redefinir sua senha, porém ainda estamos desenvolvendo está tela.
+4. Também é importante salientar que, o usuário poderá redefinir sua senha, porém ainda estamos desenvolvendo está tela.
    
 </details>
 
