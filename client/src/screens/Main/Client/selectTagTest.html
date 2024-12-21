@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../../styles/status.css">
+    <link rel="stylesheet" href="../../../styles/category.css">
+    <link rel="stylesheet" href="../../../../src/styles/reset.css">
+    <link rel="stylesheet" href="../../../../src/styles/util.css">
+    <link rel="stylesheet" href="./styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Agendamento</title>
+</head>
+
+<body>
+    <header>
+        <figure class="logo__container">
+            <img class="prestaqui__logo" src="../../../assets/img/logo.png"
+                alt="Logotipo presta aqui em um fundo preto, destacando-se com um design minimalista e elegante.">
+        </figure>
+        <div class="user__welcome">
+            <figure class="user__profile__container">
+                <img id="user__profile" src="https://robohash.org/paulo" alt="">
+            </figure>
+            <h1>Olá, bem-vindo <span id="user__name">Client</span></h1>
+        </div>
+    </header>
+    <main class="scheduling__form">
+        <h2>Criar Novo Agendamento</h2>
+        <form>
+            <!-- Campos do formulário -->
+            <div>
+                <label for="title">Título</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div>
+                <label for="description">Descrição</label>
+                <textarea id="description" name="description" required></textarea>
+            </div>
+            <div>
+                <label for="date_time">Data e Hora</label>
+                <input type="datetime-local" id="date_time" name="date_time" required>
+            </div>
+            <div>
+                <label for="category">Categoria</label>
+                <select id="category" name="category" required>
+                    <option value="eletricista">Eletricista</option>
+                    <option value="pintor">Pintor</option>
+                    <option value="faxineiro">Faxineiro</option>
+                    <option value="chaveiro">Chaveiro</option>
+                    <option value="pedreiro">Pedreiro</option>
+                    <option value="fotógrafo">Fotógrafo</option>
+                </select>
+            </div>
+            <button type="submit">Criar Agendamento</button>
+        </form>
+    </main>
+</body>
+
+</html>
