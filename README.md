@@ -1,9 +1,8 @@
 # Projeto Integrador - PrestAqui
 
+PrestAqui é uma aplicação web, focada para usuários mobile, com a função de conectar prestadores de serviço com clientes que estão precisando de ajuda e suporte.
 
-## Recursos 
-
-
+Ela permiti a comunicação e o gerenciamento mais eficiente desses serviços.
 
 ## Figma <img src="https://github.com/user-attachments/assets/1e2f00fd-6950-4939-bab2-a648992177d1" alt="image" style="width: 24px; height: auto;">
 
@@ -31,7 +30,7 @@ As telas chamadas "<em>**Customer Registration**</em>" possuem as informações 
 
 ![image](https://github.com/user-attachments/assets/7b1c0eda-60f8-4cd8-9a84-2fd42208cb90)
 
-Suponda que ele tenha concluído o cadastro, então ele retornará para a tela anterior, onde poderá efetuar o login na aplicação.
+Supondo que ele tenha concluído o cadastro, então ele retornará para a tela anterior, onde poderá efetuar o login na aplicação.
 
 Uma vez que ele tenha efetuado o login, ele será levado para o painel principal da aplicação.
 
@@ -81,4 +80,36 @@ Posteriormente, clicará em "<em>**AGENDAR VISITA**</em>":
    
 </details>
 
+
+
+<details>
+  <summary> Fluxo do prestador de serviço 🔗 </summary>
+
+<br>
+O fluxo do prestador é bem semelhante com o do cliente, por isso é recomendado que você primeiro veja o fluxo do cliente e depois retorne aqui.
+
+As maiores diferenças estarão na página principal, onde o prestador visualizará todos os seus agendamentos e poderá aplicar as seguintes ações:
+- Confirmar o serviço;
+- Reagendar o serviço;
+- Cancelar o serviço
+
+Também destacamos que o prestador é o único que poderá CONFIRMAR o serviço.
+
+![image](https://github.com/user-attachments/assets/8d13153e-2dbd-41e2-8a02-30093cd96d1e)
+
+Ele também poderá visualizar os históricos dos agendamentos:
+
+![image](https://github.com/user-attachments/assets/d472d3b7-ce4f-4f81-8bb7-76c4af30b106)
+
+Por fim, tanto o **PRESTADOR DE SERVIÇOS**, quanto o CLIENTE poderão alterar o agendamento para **CONCLUÍDO**.
+  
+</details>
+
+## Features 
+
+## Tecnologias utilizadas 💻
+
+## Instalação
+
+## Autores 🙋‍♂️
 
