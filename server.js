@@ -38,3 +38,4 @@ app.use('api/user/', userRoutes); // localhost:3000/api/user/getUser or updateUs
 app.listen(3000, () => {
     console.log('Server running on port 3000');
 });
+
