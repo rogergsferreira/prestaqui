@@ -102,8 +102,7 @@ Ele também poderá visualizar os históricos dos agendamentos:
 
 ![image](https://github.com/user-attachments/assets/d472d3b7-ce4f-4f81-8bb7-76c4af30b106)
 
-
-
+Por fim, tanto o **PRESTADOR DE SERVIÇOS**, quanto o CLIENTE poderão alterar o agendamento para **CONCLUÍDO**.
 
   
 </details>
