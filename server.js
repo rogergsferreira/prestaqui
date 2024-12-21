@@ -17,6 +17,7 @@ app.use(session({
     secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: true,
+    expires: 150000 
 }));
 
 const db = mysql.createConnection({
