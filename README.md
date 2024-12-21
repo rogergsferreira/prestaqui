@@ -82,3 +82,30 @@ Posteriormente, clicará em "<em>**AGENDAR VISITA**</em>":
 </details>
 
 
+
+<details>
+  <summary> Fluxo do prestador de serviço 🔗 </summary>
+
+<br>
+O fluxo do prestador é bem semelhante com o do cliente, por isso é recomendado que você premiro veja o fluxo do cliente e depois retorne aqui.
+
+As maiores diferenças estarão na página principal, onde o prestador visualizará todos os seus agendamentos e poderá aplicar as seguintes ações:
+- Confirmar o serviço;
+- Reagendar o serviço;
+- Cancelar o serviço
+
+Também destacamos que o prestador é o único que poderá CONFIRMAR o serviço.
+
+![image](https://github.com/user-attachments/assets/8d13153e-2dbd-41e2-8a02-30093cd96d1e)
+
+Ele também poderá visualizar os históricos dos agendamentos:
+
+![image](https://github.com/user-attachments/assets/d472d3b7-ce4f-4f81-8bb7-76c4af30b106)
+
+
+
+
+  
+</details>
+
+
