@@ -31,7 +31,7 @@ As telas chamadas "<em>**Customer Registration**</em>" possuem as informações 
 
 ![image](https://github.com/user-attachments/assets/7b1c0eda-60f8-4cd8-9a84-2fd42208cb90)
 
-Suponda que ele tenha concluído o cadastro, então ele retornará para a tela anterior, onde poderá efetuar o login na aplicação.
+Supondo que ele tenha concluído o cadastro, então ele retornará para a tela anterior, onde poderá efetuar o login na aplicação.
 
 Uma vez que ele tenha efetuado o login, ele será levado para o painel principal da aplicação.
 
@@ -87,7 +87,7 @@ Posteriormente, clicará em "<em>**AGENDAR VISITA**</em>":
   <summary> Fluxo do prestador de serviço 🔗 </summary>
 
 <br>
-O fluxo do prestador é bem semelhante com o do cliente, por isso é recomendado que você premiro veja o fluxo do cliente e depois retorne aqui.
+O fluxo do prestador é bem semelhante com o do cliente, por isso é recomendado que você primeiro veja o fluxo do cliente e depois retorne aqui.
 
 As maiores diferenças estarão na página principal, onde o prestador visualizará todos os seus agendamentos e poderá aplicar as seguintes ações:
 - Confirmar o serviço;
