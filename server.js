@@ -6,7 +6,6 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const authRoutes = require('./client/src/routes/auth-routes');
 const userRoutes = require('./client/src/routes/user-routes');
-const db = require('./client/src/database/db-connection')
 
 const app = express();
 
@@ -26,4 +25,3 @@ app.use('/api/user/', userRoutes); // localhost:3000/api/user/getUser or updateU
 app.listen(3000, () => {
     console.log('Server running on port 3000');
 });
-

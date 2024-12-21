@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const db = require('../database/db-connection')
+const db = require('../connection/db-connection')
 
 async function register(req, res) {
     const { email, password, name, phone, cep, state, city, neighborhood, street_address, complement, avatar_path, userType } = req.body;
