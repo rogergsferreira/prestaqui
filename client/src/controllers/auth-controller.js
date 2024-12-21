@@ -1,3 +1,6 @@
+const bcrypt = require('bcryptjs');
+const db = require('../database/db-connection')
+
 async function register(req, res) {
     const { email, password, name, phone, cep, state, city, neighborhood, street_address, complement, avatar_path, userType } = req.body;
 
@@ -30,6 +33,7 @@ async function register(req, res) {
         );
     } catch (error) {
         res.status(500).send('Internal server error');
+        console.log(error);
     }
 }
 

@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs');
+const db = require('../database/db-connection')
 async function getUser(req, res) {
     const { id } = req.session.user;
 
