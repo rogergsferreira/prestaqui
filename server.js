@@ -32,8 +32,8 @@ db.connect((err) => {
     console.log('Connected to the MySQL database!');
 });
 
-app.use('api/auth/', authRoutes); // localhost:3000/api/auth/register
-app.use('api/user/', userRoutes); // localhost:3000/api/user/updateUser
+app.use('api/auth/', authRoutes); // localhost:3000/api/auth/register or /login
+app.use('api/user/', userRoutes); // localhost:3000/api/user/getUser or updateUser or deleteUser
 
 app.listen(3000, () => {
     console.log('Server running on port 3000');
