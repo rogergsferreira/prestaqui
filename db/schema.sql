@@ -11,7 +11,10 @@ CREATE TABLE `users` (
     `city` VARCHAR(100) NOT NULL,
     `neighborhood` VARCHAR(100) NOT NULL,
     `street_address` VARCHAR(255) NOT NULL,
-    `avatar_path` VARCHAR(500)
+    `avatar_path` VARCHAR(500),
+    `complement` VARCHAR(50),
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 CREATE TABLE `service_provider` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
