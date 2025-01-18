@@ -13,14 +13,14 @@ img {
     height: 200px;
 }
 
-h1{
+h1 {
     font-size: 1.1em;
     color: var(--white);
 }
 
 h2 {
     font-size: 1em;
-    font-style:italic;
+    font-style: italic;
     color: var(--white);
     font-weight: 400;
     transition: .2s ease;
@@ -66,7 +66,7 @@ input[type='text'] {
     font-weight: bold;
 }
 
-input#username {
+input#email {
     background-image: url('../../assets/img/Customer.png');
     background-repeat: no-repeat;
     background-position: 10px;
@@ -79,7 +79,7 @@ input#password {
     background-position: 10px;
 }
 
-input[type='submit']{
+input[type='submit'] {
     height: 40px;
     border-radius: 10px;
     border: none;
@@ -93,7 +93,7 @@ input[type='submit']{
 
 p {
     font-size: 1em;
-    font-style:italic;
+    font-style: italic;
     color: var(--white);
     font-weight: 400;
 }
