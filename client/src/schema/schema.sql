@@ -51,10 +51,6 @@ CREATE TABLE `scheduling` (
     `category_id` INT NOT NULL,
     `title` VARCHAR(30) NOT NULL,
     `service_description` VARCHAR(255) NOT NULL,
-    `date_time` DATETIME NOT NULL,
-    `start_time` TIME NOT NULL,
-    `ending_time` TIME NOT NULL,
-    `day_shift` ENUM('Manhã', 'Tarde', 'Noite') NOT NULL,
     `status` ENUM(
         'Em andamento',
         'Aguardando validação',
