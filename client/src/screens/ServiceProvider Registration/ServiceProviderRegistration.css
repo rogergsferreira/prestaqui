@@ -70,7 +70,8 @@ form input#full__name,
 form input#cep, 
 form input#neighborhood, 
 form input#address,
-form input#additional__info {
+form input#additional__info,
+form input#cellphone {
     width: 320px;
 }
 
