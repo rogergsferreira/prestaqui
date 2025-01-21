@@ -1,6 +1,6 @@
 CREATE DATABASE `prestaqui`;
 USE `prestaqui`;
-CREATE TABLE `users` (
+CREATE TABLE `user` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `email` VARCHAR(255) NOT NULL UNIQUE,
     `password` VARCHAR(255) NOT NULL,
@@ -19,12 +19,12 @@ CREATE TABLE `users` (
 CREATE TABLE `service_provider` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `user_id` INT NOT NULL,
-    FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
+    FOREIGN KEY (`user_id`) REFERENCES `user`(`id`)
 );
 CREATE TABLE `customer` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `user_id` INT NOT NULL,
-    FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
+    FOREIGN KEY (`user_id`) REFERENCES `user`(`id`)
 );
 CREATE TABLE `category` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -52,8 +52,9 @@ CREATE TABLE `scheduling` (
     `title` VARCHAR(30) NOT NULL,
     `service_description` VARCHAR(255) NOT NULL,
     `status` ENUM(
-        'Em andamento',
         'Aguardando validação',
+        'Agendado',
+        'Em andamento',
         'Concluído',
         'Cancelado'
     ) NOT NULL,

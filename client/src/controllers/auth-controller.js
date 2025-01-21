@@ -8,62 +8,96 @@ async function register(req, res) {
     if (userType !== 'service_provider' && userType !== 'customer') {
         return res.status(400).send('Invalid userType. Must be "service_provider" or "customer".');
     }
+
     try {
-        const hashedPassword = await bcrypt.hash(password, 10);
+        // Check if the email already exists
+        db.query(`SELECT * FROM user WHERE email = ?`, [email], async (err, result) => {
+            if (err) throw err;
 
-        db.query(
-            `INSERT INTO users (email, password, name, phone, cep, state, city, neighborhood, street_address, complement, avatar_path)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [email, hashedPassword, name, phone, cep, state, city, neighborhood, street_address, complement, avatar_path],
-            (err, result) => {
-                if (err) throw err;
-
-                const userId = result.insertId;
-                const tableName = userType === 'service_provider' ? 'service_provider' : 'customer';
-
-                db.query(
-                    `INSERT INTO ${tableName} (user_id) VALUES (?)`,
-                    [userId],
-                    (err) => {
-                        if (err) throw err;
-                        res.send('User registered successfully!');
-                    }
-                );
+            if (result.length > 0) {
+                return res.status(400).send('This user is already registered');
             }
-        );
+
+            // Hash the password
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            // Insert user into the database
+            db.query(
+                `INSERT INTO user (email, password, name, phone, cep, state, city, neighborhood, street_address, complement, avatar_path)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [email, hashedPassword, name, phone, cep, state, city, neighborhood, street_address, complement, avatar_path],
+                (err, result) => {
+                    if (err) throw err;
+
+                    const userId = result.insertId;
+                    const tableName = userType === 'service_provider' ? 'service_provider' : 'customer';
+
+                    // Insert into the appropriate userType table
+                    db.query(
+                        `INSERT INTO ${tableName} (user_id) VALUES (?)`,
+                        [userId],
+                        (err) => {
+                            if (err) throw err;
+                            res.send('User registered successfully!');
+                        }
+                    );
+                }
+            );
+        });
     } catch (error) {
         res.status(500).send('Internal server error');
-        console.log(error);
+        console.error(error);
     }
 }
 
+
 async function login(req, res) {
     const { email, password, userType } = req.body;
+
+    // Check if user is already logged in
+    if (req.session.user) {
+        return res.status(400).send('You are already logged in');
+    }
+
+    // Validate userType
     const tableName = userType === 'service_provider' ? 'service_provider' : 'customer';
 
-    db.query(`SELECT * FROM users WHERE email = ?`, [email], async (err, result) => {
-        if (err) throw err;
-
-        if (result.length === 0 || !(await bcrypt.compare(password, result[0].password))) {
-            return res.status(400).send('Invalid email or password');
-        }
-
-        const userId = result[0].id;
-        req.session.user = { id: userId, email: email, userType };
-
-        db.query(`SELECT * FROM ${tableName} WHERE user_id = ?`, [userId], (err, result) => {
+    try {
+        // Check if the user exists
+        db.query(`SELECT * FROM user WHERE email = ?`, [email], async (err, result) => {
             if (err) throw err;
 
-            if (result.length === 0) {
-                return res.status(400).send('User not registered as ' + userType);
+            if (result.length === 0 || !(await bcrypt.compare(password, result[0].password))) {
+                return res.status(400).send('Invalid email or password');
             }
 
-            res.send('Logged in successfully!');
+            const userId = result[0].id;
+
+            // Verify the userType-specific registration
+            db.query(`SELECT * FROM ${tableName} WHERE user_id = ?`, [userId], (err, userTypeResult) => {
+                if (err) throw err;
+
+                if (userTypeResult.length === 0) {
+                    return res.status(400).send('User not registered as ' + userType);
+                }
+
+                // Set session data for the logged-in user
+                req.session.user = { id: userId, email: email, userType };
+                res.send('Logged in successfully!');
+            });
         });
-    });
-};
+    } catch (error) {
+        res.status(500).send('Internal server error');
+        console.error(error);
+    }
+}
+
 
 async function logout(req, res) {
+    if (!req.session.user) {
+        return res.status(401).send('You are not logged in');
+    }
+
     req.session.destroy((err) => {
         if (err) {
             return res.status(500).send('Failed to log out');
