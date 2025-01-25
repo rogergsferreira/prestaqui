@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../../styles/status.css">
+    <link rel="stylesheet" href="../../../styles/category.css">
+    <link rel="stylesheet" href="../../../../src/styles/reset.css">
+    <link rel="stylesheet" href="../../../../src/styles/util.css">
+    <!-- <link rel="stylesheet" href="../../styles/styles.css"> -->
+    <link rel="stylesheet" href="./styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página principal</title>
+</head>
+
+<body>
+    <header>
+        <figure class="logo__container">
+            <img class="prestaqui__logo" src="../../../assets/img/logo.png"
+                alt="Logotipo PrestAqui em um fundo preto, destacando-se com um design minimalista e elegante.">
+        </figure>
+
+        <div class="user__welcome">
+            <figure class="user__profile__container">
+                <img id="user__profile" src="https://robohash.org/exemplo" alt="">
+            </figure>
+
+            <h1>Olá, <span id="user__name">NomeDoCliente</span> </h1>
+        </div>
+    </header>
+
+    <main class="scheduling__info">
+
+        <div class="scheduling__actions">
+            <h2>Agendamentos</h2>
+
+            <button class="new__scheduling">
+                Novo agendamento
+            </button>
+        </div>
+
+        <section class="scheduling__container">
+            <!-- Os agendamentos serão adicionados aqui dinamicamente -->
+        </section>
+    </main>
+    <script src="scriptNEW.js"></script>
+</body>
+
+</html>

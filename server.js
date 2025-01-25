@@ -6,6 +6,7 @@ const cors = require('cors');
 const authRoutes = require('./client/src/routes/auth-routes');
 const userRoutes = require('./client/src/routes/user-routes');
 const authenticateSession = require('./client/src/middleware/auth-middleware');
+const servicesRoutes = require('./client/src/routes/services-routes');
 
 const app = express();
 
@@ -21,6 +22,12 @@ app.use(session({
 
 app.use('/api/user/', authenticateSession, userRoutes);
 app.use('/api/auth/', authRoutes);
+app.use('/api/services/', authenticateSession, servicesRoutes);
+
+app.get('/user', authenticateSession, (req, res) => {
+    res.json(req.session.user);
+});
+
 
 app.listen(3000, () => {
     console.log('Server running on port 3000');

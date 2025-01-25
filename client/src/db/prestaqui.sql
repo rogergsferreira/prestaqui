@@ -62,6 +62,28 @@ CREATE TABLE `scheduling` (
     FOREIGN KEY (`customer_id`) REFERENCES `customer`(`id`),
     FOREIGN KEY (`category_id`) REFERENCES `category`(`id`)
 );
+
+-- cria a tabela `services`, que armazena os serviços adicionados pelos clientes.
+CREATE TABLE `services` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `customer_id` INT NOT NULL,
+    `category_id` INT NOT NULL,
+    `title` VARCHAR(100) NOT NULL,
+    `description` TEXT NOT NULL,
+    `provider_name` VARCHAR(255) NOT NULL,
+    `service_date` DATE NOT NULL,
+    `status` ENUM('Aguardando', 'Agendado', 'Concluído', 'Cancelado') NOT NULL DEFAULT 'Aguardando',
+    `provider_category` VARCHAR(255) NOT NULL,
+    `whatsapp_number` VARCHAR(15) NOT NULL,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (`customer_id`) REFERENCES `customer`(`id`),
+    FOREIGN KEY (`category_id`) REFERENCES `category`(`id`)
+);
+-- a tabela `services` é criada para armazenar propostas de serviços adicionadas pelos clientes.
+-- dessa forma, os prestadores de serviços podem visualizar essas propostas e escolher quais serviços desejam atender.
+
+
 -- Índices para melhorar performance em consultas
 /* CREATE INDEX idx_service_provider_id ON `scheduling`(`service_provider_id`);
  CREATE INDEX idx_customer_id ON `scheduling`(`customer_id`);
