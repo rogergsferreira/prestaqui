@@ -1,0 +1,189 @@
+body {
+    background-color: var(--blue-dark);
+}
+
+/* Header Style */
+
+header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    height: 30vh;
+    font-family: 'Poppins', sans-serif;
+}
+
+header figure.logo__container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    height: 25vh;
+}
+
+img.prestaqui__logo {
+    height: 200px;
+}
+
+
+header .user__welcome {
+    text-indent: 20px;
+    display: flex;
+    align-items: center;
+}
+
+header .user__welcome #user__profile {
+    height: 40px;
+    width: 40px;
+    border-radius: 100%;
+    background-color: var(--white);
+}
+
+
+h1 {
+    font-size: 1.1em;
+    color: var(--white);
+    font-weight: 200;
+}
+
+#user__name {
+    font-weight: bold;
+}
+
+main {
+    margin-top: 60px;
+}
+
+
+
+/* Main Style */
+
+main {
+    /* background-color: red; */
+
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-bottom: 100px;
+}
+
+main .scheduling__actions {
+    /* background-color: pink; */
+    font-family: 'Poppins', sans-serif;
+    color: var(--white);
+
+    font-size: .75em;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    /* gap: 30px; */
+    justify-content: space-evenly;
+}
+
+main .scheduling__actions .new__scheduling {
+    /* background-color: red; */
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--button-second-color);
+    font-weight: 600;
+    color: var(--white);
+    width: 140px;
+    /* padding: 5px; */
+    cursor: pointer;
+
+}
+
+main .scheduling__actions .new__scheduling:hover {
+    background-color: var(--accent-lightblue);
+    transition: .9s ease-out;
+}
+
+
+
+main .scheduling__container {
+    /* background-color: aqua; */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    margin-top: 20px;    
+}
+
+
+.scheduling {
+    /* background-color: red; */
+    width: 320px;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.scheduling h3, 
+.scheduling h4{
+    font-family: 'Poppins', sans-serif;
+    color: var(--white); 
+}
+
+h3 {
+    font-size: 1.15em;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+}
+
+.scheduling h4 {
+    font-size: .9em;
+}
+
+
+.scheduling #service__provider__name, 
+.scheduling #scheduling__time, 
+.scheduling #scheduling__status, 
+.scheduling #scheduling__description {
+    color: var(--button-color) !important;
+    font-weight: 600;
+}
+
+.scheduling #service__provider__name {
+    font-family: 'Poppins', sans-serif;
+    font-size: .9em;
+}
+
+.scheduling .service__provider__info {
+    display: flex;
+    /* flex-direction: row; */
+    gap: 5px;
+    align-items: center;
+    /* background-color: red; */
+}
+
+#whatsapp-logo {
+    height: 20px;
+}
+
+.scheduling .category {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.scheduling .scheduling__cancel {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    background: #DBCECE;
+    border: 1px solid #F91212;
+    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    height: 30px;
+    width: 150px;
+    margin: 10px 120px;
+    transition: .7s ease;
+    cursor: pointer;
+}
+
+.scheduling .scheduling__cancel:hover {
+    background: #aaa5a5;
+}
+

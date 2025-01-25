@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agendamento de Visita</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <!-- Container principal -->
+  <div class="container">
+    <h1>SELECIONE O DIA E O HORÁRIO</h1>
+
+    <!-- Seção de seleção de data -->
+    <div class="calendario">
+      <label for="date">Informe o dia:</label>
+      <input type="date" id="date" min="">
+    </div>
+
+    <!-- Seção de seleção de horário -->
+    <div class="intervalos-horarios">
+      <label>Informe o horário:</label>
+      <div id="intervalos-horarios">
+        <input type="time" id="Inicio" name="Inicio" min="00:00" max="01:00" required />
+        <input type="time" id="Termino" name="Término" min="00:00" max="01:00" required />
+      </div>
+    </div>
+
+    <!-- Botão de confirmação -->
+    <button id="botao-confirmar">CONFIRMAR VISITA</button>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
