@@ -50,9 +50,9 @@ CREATE TABLE `scheduling` (
     `customer_id` INT NOT NULL,
     `category_id` INT NOT NULL,
     `title` VARCHAR(30) NOT NULL,
+    `whatsapp_link` VARCHAR(20) NOT NULL, -- wa.me/+5551999999999
     `service_description` VARCHAR(255) NOT NULL,
     `status` ENUM(
-        'Aguardando validação',
         'Agendado',
         'Em andamento',
         'Concluído',
@@ -64,6 +64,7 @@ CREATE TABLE `scheduling` (
 );
 
 -- cria a tabela `services`, que armazena os serviços adicionados pelos clientes.
+-- são necessárias essas colunas para obtenção dos dados
 CREATE TABLE `services` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `customer_id` INT NOT NULL,
@@ -72,9 +73,9 @@ CREATE TABLE `services` (
     `description` TEXT NOT NULL,
     `provider_name` VARCHAR(255) NOT NULL,
     `service_date` DATE NOT NULL,
-    `status` ENUM('Aguardando', 'Agendado', 'Concluído', 'Cancelado') NOT NULL DEFAULT 'Aguardando',
+    `status` VARCHAR(9) NOT NULL DEFAULT 'Em busca', -- Verificar se é necessário
     `provider_category` VARCHAR(255) NOT NULL,
-    `whatsapp_number` VARCHAR(15) NOT NULL,
+    `whatsapp_link` VARCHAR(20) NOT NULL, -- wa.me/+5551999999999
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (`customer_id`) REFERENCES `customer`(`id`),

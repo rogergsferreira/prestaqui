@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const db = require('../connection/db-connection');
-  
+
 // Obtém todos os usuários
 async function getUsers(req, res) {
     db.query(`SELECT * FROM user`, (err, result) => {
@@ -100,6 +100,7 @@ async function deleteUser(req, res) {
 
         db.query(`DELETE FROM service_provider WHERE user_id = ?`, [id], (err) => {
             if (err) {
+                console.log(err);
                 return db.rollback(() => res.status(500).send('Failed to delete related records'));
             }
 
