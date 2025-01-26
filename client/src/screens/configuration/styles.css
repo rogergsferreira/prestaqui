@@ -1,0 +1,117 @@
+.change-profile,
+.logout,
+.delete-account,
+.switch-profile,
+.create-client,
+.create-provider {
+    background-color: #3F5780;
+    border-radius: 10px;
+    width: 180px;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 0.9em;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    color: var(--white);
+}
+
+.delete-account {
+    background-color: #aa2424;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+ul {
+    list-style-type: none;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+:root {
+    --blue-dark: #304261;
+    --blue-medium: #4e5d77;
+    --blue-light: #2b3e5d;
+    --accent-yellow: #f2a541;
+    --accent-lightblue: #69c9fd;
+    --button-color: #182132;
+    --button-second-color: #3F5780;
+    --input-type-text-color: #B5BAC1;
+    --white: #FFF;
+    --black: #000;
+    --font-primary: 'Roboto', sans-serif;
+    --headers-font: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(to bottom, #182132, #304261);
+    color: var(--white);
+    font-family: var(--font-primary);
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2vh;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 3vh;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    font-size: 1.5em;
+    color: var(--white);
+    margin: 4vh 0;
+}
+
+button {
+    background-color: var(--button-color);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    border: none;
+    height: 40px;
+    width: 600px;
+    font-weight: 700;
+    font-size: .9em;
+    margin-top: 1vh;
+    transition: all .2s;
+}
+
+button:hover {
+    background-color: #5e79a8c9;
+    box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.25);
+}
+
+img {
+    height: 200px;
+}
+
+#left {
+    height: 32px;
+    width: 32px;
+    position: absolute;
+    top: 20px;
+    left: 30px;
+}
