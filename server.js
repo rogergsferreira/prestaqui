@@ -24,9 +24,9 @@ app.use('/api/user/', authenticateSession, userRoutes);
 app.use('/api/auth/', authRoutes);
 app.use('/api/services/', authenticateSession, servicesRoutes);
 
-app.get('/user', authenticateSession, (req, res) => {
-    res.json(req.session.user);
-});
+// app.get('/user', authenticateSession, (req, res) => {
+//     res.json(req.session.user);
+// });
 
 
 app.listen(3000, () => {
