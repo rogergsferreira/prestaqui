@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../../../styles/reset.css">
+    <link rel="stylesheet" href="../../../../styles/util.css">
+    <link rel="stylesheet" href="./styles.css">
+    <title>Cadastro Cliente</title>
+</head>
+
+<body>
+    <header>
+        <div id="widgets">
+            <a href="../../../login/login-customer/index.html">
+                <img src="../../../../assets/img/left.png" alt="Seta apontando para a esquerda" id="left">
+            </a>
+        </div>
+        <img src="../../../../../src/assets/img/logo.png" alt="">
+    </header>
+    <main>
+        <h1>Informações básicas</h1>
+        <form>
+            <input type="email" name="email" id="email" placeholder="E-mail">
+            <input type="password" name="password" id="password" placeholder="Senha">
+            <input type="text" name="name" id="name" placeholder="Nome completo"> <!-- Atualiza para 'name' -->
+            <input type="text" name="cellphone" id="cellphone" placeholder="Número de celular">
+            <input type="text" name="cep" id="cep" placeholder="CEP">
+            <div class="separator__form">
+                <input type="text" name="state" id="state" placeholder="Estado">
+                <input type="text" name="city" id="city" placeholder="Cidade">
+            </div>
+            <input type="text" name="neighborhood" id="neighborhood" placeholder="Bairro">
+            <input type="text" name="address" id="address" placeholder="Logradouro">
+            <input type="text" name="additional__info" id="additional__info" placeholder="Complemento">
+        </form>
+        <a href="./../2-customer-profile/index.html">
+            <button class="next__button">Avançar</button>
+        </a>
+    </main>
+    <script src="./script.js"></script>
+</body>
+
+</html>
