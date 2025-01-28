@@ -17,7 +17,7 @@ app.use(session({
     secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: true,
-    expires: 150000
+    expires: 1800000
 }));
 
 app.use('/api/user/', authenticateSession, userRoutes);

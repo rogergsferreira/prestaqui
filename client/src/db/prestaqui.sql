@@ -16,11 +16,9 @@ CREATE TABLE `user` (
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-CREATE TABLE `service_provider` (
+CREATE TABLE `service_provider` ( -- Número do prestador de serviço ex. wa.me/+5551999999999
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `user_id` INT NOT NULL,
-    `provider_name` VARCHAR(255) NOT NULL,
-    `provider_number` VARCHAR(20) NOT NULL, -- Número do prestador de serviço ex. wa.me/+5551999999999
     FOREIGN KEY (`user_id`) REFERENCES `user`(`id`)
 );
 CREATE TABLE `customer` (
