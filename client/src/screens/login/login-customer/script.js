@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const responseData = await response.text();
             if (responseData === "Logged in successfully!") {
-                window.location.href = "./../../main/customer/1-customer-home/index.html"; // Certifique-se de que o caminho está correto
+                window.location.href = "./../../configuration/index.html"; // testando configuration, dps defazer isso aqui ./../../main/customer/1-customer-home/index.html
             } else {
                 alert(responseData); // mensagem de erro
             }

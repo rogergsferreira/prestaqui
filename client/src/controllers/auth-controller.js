@@ -83,7 +83,14 @@ async function login(req, res) {
 
                 // Set session data for the logged-in user
                 req.session.user = { id: userId, email: email, userType };
-                res.send('Logged in successfully!');
+                req.session.save((err) => {
+                    if (err) {
+                        return res.status(500).send({ message: 'Erro ao salvar a sessão' });
+                    } else {
+                        console.log('Sessão user atual no momento de ter feito o login:', req.session.user);
+                        res.status(200).send('Logged in successfully!');
+                    }
+                });
             });
         });
     } catch (error) {
@@ -106,4 +113,13 @@ async function logout(req, res) {
     });
 }
 
-module.exports = { register, login, logout };
+const getSession = (req, res) => {
+    if (req.session.user) {
+        res.json({ user: req.session.user });
+    } else {
+        res.status(401).json({ message: 'No active session' }); // Enviar resposta em JSON
+    }
+};
+
+
+module.exports = { register, login, logout, getSession };
