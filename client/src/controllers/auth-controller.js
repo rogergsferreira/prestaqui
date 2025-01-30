@@ -16,20 +16,72 @@ const registerSchema = Joi.object({
     complement: Joi.string().allow(''),
     avatar_path: Joi.string().allow(''),
     userType: Joi.string().valid('service_provider', 'customer').required(),
+    categories: Joi.array().items(Joi.string()).when('userType', {
+        is: 'service_provider',
+        then: Joi.required(),
+        otherwise: Joi.forbidden(),
+    }),
 });
+
+function insertCategories(userId, categories, res) {
+    // get ID do service_provider
+    const getServiceProviderIdQuery = `SELECT id FROM service_provider WHERE user_id = ?`;
+    db.query(getServiceProviderIdQuery, [userId], (err, spResult) => {
+        if (err) return res.status(500).send('Erro ao obter o ID do prestador de serviço');
+
+        const serviceProviderId = spResult[0].id;
+        const categoryValues = [];
+        let errorOccurred = false;
+
+        categories.forEach((categoryName, index) => {
+            const getCategoryIdQuery = `SELECT id FROM category WHERE category_name = ?`;
+            db.query(getCategoryIdQuery, [categoryName], (err, categoryResult) => {
+                if (err || categoryResult.length === 0) {
+                    errorOccurred = true;
+                    return res.status(400).send(`Categoria não encontrada: ${categoryName}`);
+                }
+
+                const categoryId = categoryResult[0].id;
+                categoryValues.push([serviceProviderId, categoryId]);
+
+                if (categoryValues.length === categories.length && !errorOccurred) {
+                    const insertHasCategoryQuery = `INSERT INTO has_category (service_provider_id, category_id) VALUES ?`;
+                    db.query(insertHasCategoryQuery, [categoryValues], (err) => {
+                        if (err) return res.status(500).send('Erro ao inserir categorias');
+                        res.send('Usuário registrado com sucesso!');
+                    });
+                }
+            });
+        });
+    });
+}
 
 async function register(req, res) {
     const { error } = registerSchema.validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    const { email, password, name, phone, cep, state, city, neighborhood, street_address, complement, avatar_path, userType } = req.body;
+    const {
+        email,
+        password,
+        name,
+        phone,
+        cep,
+        state,
+        city,
+        neighborhood,
+        street_address,
+        complement,
+        avatar_path,
+        userType,
+        categories
+    } = req.body;
 
     try {
         db.query(`SELECT * FROM user WHERE email = ?`, [email], async (err, result) => {
-            if (err) return res.status(500).send('Database error');
+            if (err) return res.status(500).send('Erro no banco de dados');
 
             if (result.length > 0) {
-                return res.status(400).send('This user is already registered');
+                return res.status(400).send('Este usuário já está registrado');
             }
 
             const hashedPassword = await bcrypt.hash(password, 10);
@@ -39,7 +91,7 @@ async function register(req, res) {
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [email, hashedPassword, name, phone, cep, state, city, neighborhood, street_address, complement, avatar_path],
                 (err, result) => {
-                    if (err) return res.status(500).send('Database error');
+                    if (err) return res.status(500).send('Erro ao registrar o usuário');
 
                     const userId = result.insertId;
                     const tableName = userType === 'service_provider' ? 'service_provider' : 'customer';
@@ -48,15 +100,21 @@ async function register(req, res) {
                         `INSERT INTO ${tableName} (user_id) VALUES (?)`,
                         [userId],
                         (err) => {
-                            if (err) return res.status(500).send('Database error');
-                            res.send('User registered successfully!');
+                            if (err) return res.status(500).send('Erro ao registrar o tipo de usuário');
+
+                            if (userType === 'service_provider' && categories && categories.length > 0) {
+                                // Inserir categorias na tabela has_category
+                                insertCategories(userId, categories, res);
+                            } else {
+                                res.send('Usuário registrado com sucesso!');
+                            }
                         }
                     );
                 }
             );
         });
     } catch (error) {
-        res.status(500).send('Internal server error');
+        res.status(500).send('Erro interno do servidor');
         console.error(error);
     }
 }
@@ -90,7 +148,7 @@ async function login(req, res) {
                 req.session.user = { id: userId, email: email, userType };
                 req.session.save((err) => {
                     if (err) return res.status(500).send('Failed to save session');
-                    res.status(200).send('Logged in successfully!');
+                    res.status(200).json(req.session.user); // res.status(200).send('Logged in successfully!');
                 });
             });
         });
@@ -101,9 +159,9 @@ async function login(req, res) {
 }
 
 async function logout(req, res) {
-    if (!req.session.user) {
-        return res.status(401).send('You are not logged in');
-    }
+    // if (!req.session.user) {
+    //     return res.status(401).send('You are not logged in');
+    // }
 
     req.session.destroy((err) => {
         if (err) return res.status(500).send('Failed to log out');
@@ -119,4 +177,4 @@ const getSession = (req, res) => {
     }
 };
 
-module.exports = { register, login, logout, getSession };
+module.exports = { register, login, logout, getSession, insertCategories };

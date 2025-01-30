@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Atualizar Perfil</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <header>
+        <div id="widgets">
+            <a href="../index.html">
+                Voltar para a tela anterior
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <h1>Atualizar Perfil</h1>
+        <form id="update-profile-form">
+            <label for="email">Novo Email:</label>
+            <input type="email" id="email" name="newEmail">
+
+            <label for="password">Nova Senha:</label>
+            <input type="password" id="password" name="newPassword">
+
+            <label for="name">Nome:</label>
+            <input type="text" id="name" name="newName">
+
+            <label for="phone">Telefone:</label>
+            <input type="text" id="phone" name="newPhone">
+
+            <label for="cep">CEP:</label>
+            <input type="text" id="cep" name="newCep">
+
+            <label for="state">Estado:</label>
+            <input type="text" id="state" name="newState">
+
+            <label for="city">Cidade:</label>
+            <input type="text" id="city" name="newCity">
+
+            <label for="neighborhood">Bairro:</label>
+            <input type="text" id="neighborhood" name="newNeighborhood">
+
+            <label for="street_address">Endereço:</label>
+            <input type="text" id="street_address" name="newStreetAddress">
+
+            <label for="complement">Complemento:</label>
+            <input type="text" id="complement" name="newComplement">
+
+            <label for="avatar_path">URL do Avatar:</label>
+            <input type="text" id="avatar_path" name="newAvatarPath">
+
+            <!-- seção de categorias para prestadores de serviço -->
+            <div id="categories-section" style="display: none;">
+                <label for="categories">Categorias:</label>
+                <div class="dropdown">
+                    <button type="button" class="dropdown-btn">Selecionar categorias</button>
+                    <div class="dropdown-menu">
+                        <label>
+                            <input type="checkbox" value="Eletricista"> Eletricista
+                        </label>
+                        <label>
+                            <input type="checkbox" value="Pintor"> Pintor
+                        </label>
+                        <label>
+                            <input type="checkbox" value="Faxineiro"> Faxineiro
+                        </label>
+                        <label>
+                            <input type="checkbox" value="Chaveiro"> Chaveiro
+                        </label>
+                        <label>
+                            <input type="checkbox" value="Pedreiro"> Pedreiro
+                        </label>
+                        <label>
+                            <input type="checkbox" value="Fotógrafo"> Fotógrafo
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit">Atualizar</button>
+        </form>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
