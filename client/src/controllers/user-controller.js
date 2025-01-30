@@ -188,13 +188,13 @@ async function deleteUser(req, res) {
 
         // verificar se há agendamentos não concluídos ou não cancelados
         const checkSchedulingQuery = `
-            SELECT * FROM scheduling
+            SELECT * FROM solicitation
             WHERE (service_provider_id IN (SELECT id FROM service_provider WHERE user_id = ?)
             OR customer_id IN (SELECT id FROM customer WHERE user_id = ?))
             AND status NOT IN ('Concluído', 'Cancelado')`;
 
         db.query(checkSchedulingQuery, [id, id], (err, results) => {
-            if (err) return handleError(err, 'Failed to check scheduling');
+            if (err) return handleError(err, 'Failed to check solicitation');
 
             if (results.length > 0) {
                 // existem agendamentos ativos, cancelar exclusão
@@ -211,13 +211,13 @@ async function deleteUser(req, res) {
                 db.query(deleteHasCategoryQuery, [id], (err) => {
                     if (err) return handleError(err, 'Failed to delete from has_category');
 
-                    // excluir registros de 'scheduling' onde o usuário é um 'service_provider' ou 'customer'
+                    // excluir registros de 'solicitation' onde o usuário é um 'service_provider' ou 'customer'
                     const deleteSchedulingQuery = `
-                        DELETE FROM scheduling
+                        DELETE FROM solicitation
                         WHERE service_provider_id IN (SELECT id FROM service_provider WHERE user_id = ?)
                         OR customer_id IN (SELECT id FROM customer WHERE user_id = ?)`;
                     db.query(deleteSchedulingQuery, [id, id], (err) => {
-                        if (err) return handleError(err, 'Failed to delete from scheduling');
+                        if (err) return handleError(err, 'Failed to delete from solicitation');
 
                         // excluir 'service_provider' associado ao usuário
                         const deleteServiceProviderQuery = `DELETE FROM service_provider WHERE user_id = ?`;
