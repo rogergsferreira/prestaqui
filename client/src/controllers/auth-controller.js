@@ -110,6 +110,25 @@ async function register(req, res) {
                             }
                         }
                     );
+
+                    // categories.forEach(category => {
+
+                    //     console.log('TESTE AQUI BIZARRO!')
+
+                    //     db.query('SELECT id FROM category WHERE category_name = ?', [category], async (err, result) => {
+                    //         if (err) return res.status(500).send('Database error');
+
+                    //         db.query(
+                    //             'INSERT INTO has_category (service_provider_id, category_id) VALUES (?, ?)', [userId, result],
+                    //             (err) => {
+                    //                 if (err) return res.status(500).send('Database error');
+                    //                 res.send('Category has been added to service provider')
+                    //             }
+                    //         )
+
+                    //     })
+                    // });
+
                 }
             );
         });

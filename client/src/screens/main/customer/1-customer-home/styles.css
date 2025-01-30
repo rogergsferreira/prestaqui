@@ -25,9 +25,10 @@ img.prestaqui__logo {
 
 
 header .user__welcome {
-    text-indent: 20px;
+    text-indent: 10px;
     display: flex;
     align-items: center;
+    gap: 30px;
 }
 
 header .user__welcome #user__profile {
@@ -39,7 +40,7 @@ header .user__welcome #user__profile {
 
 
 h1 {
-    font-size: 1.1em;
+    font-size: 1em;
     color: var(--white);
     font-weight: 200;
 }
@@ -53,12 +54,9 @@ main {
 }
 
 
-
 /* Main Style */
 
 main {
-    /* background-color: red; */
-
     display: flex;
     flex-direction: column;
     gap: 30px;
@@ -66,20 +64,17 @@ main {
 }
 
 main .scheduling__actions {
-    /* background-color: pink; */
     font-family: 'Poppins', sans-serif;
     color: var(--white);
-
     font-size: .75em;
     height: 10vh;
     display: flex;
     align-items: center;
-    /* gap: 30px; */
     justify-content: space-evenly;
 }
 
-main .scheduling__actions .new__scheduling {
-    /* background-color: red; */
+main .scheduling__actions .new__scheduling,
+main .scheduling__actions .history {
     height: 50px;
     border-radius: 10px;
     border: none;
@@ -88,9 +83,26 @@ main .scheduling__actions .new__scheduling {
     font-weight: 600;
     color: var(--white);
     width: 140px;
-    /* padding: 5px; */
     cursor: pointer;
+}
 
+
+
+main .scheduling__actions #history {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--button-second-color);
+    background-color: transparent
+
+}
+
+main .scheduling__actions h2 {
+    background-color: var(--button-second-color);
+    height: 50px;
+    width: 140px;
+    text-align: center;
+    border-radius: 10px;
 }
 
 main .scheduling__actions .new__scheduling:hover {
@@ -98,10 +110,7 @@ main .scheduling__actions .new__scheduling:hover {
     transition: .9s ease-out;
 }
 
-
-
 main .scheduling__container {
-    /* background-color: aqua; */
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -112,7 +121,6 @@ main .scheduling__container {
 
 
 .scheduling {
-    /* background-color: red; */
     width: 320px;
     border-radius: 10px;
     padding: 10px;
@@ -153,10 +161,8 @@ h3 {
 
 .scheduling .service__provider__info {
     display: flex;
-    /* flex-direction: row; */
     gap: 5px;
     align-items: center;
-    /* background-color: red; */
 }
 
 #whatsapp-logo {
@@ -187,3 +193,60 @@ h3 {
     background: #aaa5a5;
 }
 
+
+.scheduling__info {
+    margin-top: 100px;
+}
+
+
+/*Dropdown menu */
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-btn {
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    background-color: var(--button-color);
+    font-weight: bold;
+    color: var(--white);
+    margin-left: -18%;
+    width: 120px;
+    font-size: .9em;
+  } 
+
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 1;
+    width: 150px;
+    left: -60px;
+  }
+
+  .dropdown.open .dropdown-menu{
+    display: block;
+  }
+
+
+  .dropdown-menu label {
+    display: block;
+    cursor: pointer;
+    padding: 5px 0;
+  }
+
+  .dropdown.active .dropdown-menu {
+    display: block;
+  }
+
+  .next__button {
+    margin-left: 55px;
+    transform: translateY(-50px);
+  }
