@@ -106,7 +106,10 @@ Por fim, tanto o **PRESTADOR DE SERVIÇOS**, quanto o CLIENTE poderão alterar o
 </details>
 
 ## Tecnologias utilizadas 💻
-
+- HTML
+- CSS
+- Java Script
+- MySQL
 ## Instruções de instalação
 - Abra o terminal
 - Clone o repositório: ```git clone https://github.com/rogergsferreira/prestaqui.git```
