@@ -16,7 +16,7 @@ const registerSchema = Joi.object({
     complement: Joi.string().allow(''),
     avatar_path: Joi.string().allow(''),
     userType: Joi.string().valid('service_provider', 'customer').required(),
-    categories: Joi.array().required()
+    categories: Joi.array() // MELHORIA - fazer um if, ou algo assim para aplicar o .required() apenas para o service_provider
 });
 
 async function register(req, res) {
