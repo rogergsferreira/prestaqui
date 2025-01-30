@@ -3,12 +3,10 @@ const button = document.querySelector('.dropdown-btn');
 const menu = document.querySelector('.dropdown-menu');
 const nextButton = document.querySelector('.next__button');
 
-// Toggle dropdown menu
 button.addEventListener('click', () => {
   dropdown.classList.toggle('active');
 });
 
-// Close dropdown when clicking outside
 window.addEventListener('click', (e) => {
   if (!dropdown.contains(e.target)) {
     dropdown.classList.remove('active');
@@ -16,7 +14,7 @@ window.addEventListener('click', (e) => {
 });
 
 nextButton.addEventListener('click', (event) => {
-  event.preventDefault(); // Prevent default form submission
+  event.preventDefault();
   const checkboxes = document.querySelectorAll('.dropdown-menu input[type="checkbox"]');
   const selectedCategories = [];
 
