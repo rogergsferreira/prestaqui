@@ -116,9 +116,9 @@ Por fim, tanto o **PRESTADOR DE SERVIÇOS**, quanto o CLIENTE poderão alterar o
 - Rode o comando ```node server.js``` no terminal
 - Instale a extensão "Live server" no VS Code e clique em "Go Live" no arquivo ```./prestaqui/client/public/index.html```
 ## Autores 🙋‍♂️ 
-Aline Mentz
-Matheus Caetano
-Paulo Xavier
-Pedro Borba
-Rodrigo Tomazeski
-Róger Ferreira
+- Aline Mentz
+- Matheus Caetano
+- Paulo Xavier
+- Pedro Borba
+- Rodrigo Tomazeski
+- Róger Ferreira
