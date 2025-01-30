@@ -17,17 +17,12 @@ app.use(session({
     secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: true,
-    expires: 1800000
+    expires: 150000
 }));
 
 app.use('/api/user/', authenticateSession, userRoutes);
 app.use('/api/auth/', authRoutes);
 app.use('/api/services/', authenticateSession, servicesRoutes);
-
-// app.get('/user', authenticateSession, (req, res) => {
-//     res.json(req.session.user);
-// });
-
 
 app.listen(3000, () => {
     console.log('Server running on port 3000');
