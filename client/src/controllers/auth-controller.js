@@ -170,11 +170,20 @@ async function login(req, res) {
                     res.status(200).json(req.session.user); // res.status(200).send('Logged in successfully!');
                 });
             });
+
+            // req.session.user = { id: userId, email: email, userType: userType };
+
         });
     } catch (error) {
         res.status(500).send('Internal server error');
         console.error(error);
     }
+
+    req.session.save((err) => {
+        if (err) return res.status(500).send('Failed to save session');
+        res.status(200).send('Logged in successfully!');
+    });
+
 }
 
 async function logout(req, res) {
