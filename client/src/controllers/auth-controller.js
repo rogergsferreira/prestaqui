@@ -16,17 +16,20 @@ const registerSchema = Joi.object({
     complement: Joi.string().allow(''),
     avatar_path: Joi.string().allow(''),
     userType: Joi.string().valid('service_provider', 'customer').required(),
+    categories: Joi.array().required()
 });
 
 async function register(req, res) {
     const { error } = registerSchema.validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    const { email, password, name, phone, cep, state, city, neighborhood, street_address, complement, avatar_path, userType } = req.body;
+    const { email, password, name, phone, cep, state, city, neighborhood, street_address, complement, avatar_path, userType, categories } = req.body;
+
+    console.log(`Categorias -- ${categories}`)
 
     try {
         db.query(`SELECT * FROM user WHERE email = ?`, [email], async (err, result) => {
-            if (err) return res.status(500).send('Database error');
+            if (err) return res.status(500).send('Database error SELECT user');
 
             if (result.length > 0) {
                 return res.status(400).send('This user is already registered');
@@ -39,7 +42,7 @@ async function register(req, res) {
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [email, hashedPassword, name, phone, cep, state, city, neighborhood, street_address, complement, avatar_path],
                 (err, result) => {
-                    if (err) return res.status(500).send('Database error');
+                    if (err) return res.status(500).send('Database error INSERT user 1');
 
                     const userId = result.insertId;
                     const tableName = userType === 'service_provider' ? 'service_provider' : 'customer';
@@ -48,10 +51,29 @@ async function register(req, res) {
                         `INSERT INTO ${tableName} (user_id) VALUES (?)`,
                         [userId],
                         (err) => {
-                            if (err) return res.status(500).send('Database error');
+                            if (err) return res.status(500).send('Database error INSERT user 2');
                             res.send('User registered successfully!');
                         }
                     );
+
+                    // categories.forEach(category => {
+
+                    //     console.log('TESTE AQUI BIZARRO!')
+
+                    //     db.query('SELECT id FROM category WHERE category_name = ?', [category], async (err, result) => {
+                    //         if (err) return res.status(500).send('Database error');
+
+                    //         db.query(
+                    //             'INSERT INTO has_category (service_provider_id, category_id) VALUES (?, ?)', [userId, result],
+                    //             (err) => {
+                    //                 if (err) return res.status(500).send('Database error');
+                    //                 res.send('Category has been added to service provider')
+                    //             }
+                    //         )
+
+                    //     })
+                    // });
+
                 }
             );
         });
