@@ -12,9 +12,9 @@ const registerSchema = Joi.object({
     state: Joi.string().required(),
     city: Joi.string().required(),
     neighborhood: Joi.string().required(),
-    street_address: Joi.string().required(),
+    streetAddress: Joi.string().required(),
     complement: Joi.string().allow(''),
-    avatar_path: Joi.string().allow(''),
+    avatarPath: Joi.string().allow(''),
     userType: Joi.string().valid('service_provider', 'customer').required(),
     categories: Joi.alternatives()
         .conditional('userType', {
@@ -28,7 +28,7 @@ async function register(req, res) {
     const { error } = registerSchema.validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    const { email, password, name, phone, cep, state, city, neighborhood, street_address, complement, avatar_path, userType, categories } = req.body;
+    const { email, password, name, phone, cep, state, city, neighborhood, streetAddress, complement, avatarPath, userType, categories } = req.body;
 
     console.log(`Categorias -- ${categories}`)
 
@@ -45,7 +45,7 @@ async function register(req, res) {
             db.query(
                 `INSERT INTO user (email, password, name, phone, cep, state, city, neighborhood, street_address, complement, avatar_path)
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                [email, hashedPassword, name, phone, cep, state, city, neighborhood, street_address, complement, avatar_path],
+                [email, hashedPassword, name, phone, cep, state, city, neighborhood, streetAddress, complement, avatarPath],
                 (err, result) => {
                     if (err) return res.status(500).send('Database error INSERT user 1');
 
