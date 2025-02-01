@@ -12,15 +12,16 @@ const registerSchema = Joi.object({
     state: Joi.string().required(),
     city: Joi.string().required(),
     neighborhood: Joi.string().required(),
-    street_address: Joi.string().required(),
+    streetAddress: Joi.string().required(),
     complement: Joi.string().allow(''),
-    avatar_path: Joi.string().allow(''),
+    avatarPath: Joi.string().allow(''),
     userType: Joi.string().valid('service_provider', 'customer').required(),
-    categories: Joi.array().items(Joi.string()).when('userType', {
-        is: 'service_provider',
-        then: Joi.required(),
-        otherwise: Joi.forbidden(),
-    }),
+    categories: Joi.alternatives()
+        .conditional('userType', {
+            is: 'service_provider',
+            then: Joi.array().min(1).required(),
+            otherwise: Joi.forbidden()
+        })
 });
 
 function insertCategories(userId, categories, res) {
@@ -69,7 +70,7 @@ async function register(req, res) {
         state,
         city,
         neighborhood,
-        street_address,
+        streetAddress,
         complement,
         avatar_path,
         userType,
@@ -89,7 +90,7 @@ async function register(req, res) {
             db.query(
                 `INSERT INTO user (email, password, name, phone, cep, state, city, neighborhood, street_address, complement, avatar_path)
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                [email, hashedPassword, name, phone, cep, state, city, neighborhood, street_address, complement, avatar_path],
+                [email, hashedPassword, name, phone, cep, state, city, neighborhood, streetAddress, complement, avatarPath],
                 (err, result) => {
                     if (err) return res.status(500).send('Erro ao registrar o usuário');
 
