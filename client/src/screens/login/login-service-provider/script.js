@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+    localStorage.clear();
     const form = document.getElementById("loginForm");
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
@@ -31,9 +32,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            const responseData = await response.text();
-            if (responseData === "Logged in successfully!") {
-                window.location.href = "./../../main/service-provider/service-provider-home/index.html";
+            const responseData = await response.json();
+
+            if (response.ok) {
+                // Salvando no localStorage
+                localStorage.setItem('userId', responseData.id);
+                localStorage.setItem('email', responseData.email);
+                localStorage.setItem('userType', responseData.userType);
+                window.location.href = "./../../configuration/index.html"; // testando configuration, dps defazer isso aqui ./../../main/customer/1-customer-home/index.html
             } else {
                 alert(responseData); // mensagem de erro
             }
