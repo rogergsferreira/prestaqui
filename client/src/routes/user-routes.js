@@ -7,7 +7,5 @@ router.put('/update-user/:id', userController.updateUser);
 router.delete('/delete-user/:id', userController.deleteUser);
 router.post('/add-second-profile', userController.addSecondProfile);
 router.get('/get-profile-type/:userId', userController.getProfileType);
-router.post('/add-categories', userController.addCategories);
-router.get('/get-categories/:id', userController.getUserCategories);
 
 module.exports = router;
