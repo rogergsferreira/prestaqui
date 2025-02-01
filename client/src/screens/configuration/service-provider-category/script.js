@@ -38,7 +38,7 @@ nextButton.addEventListener('click', (event) => {
     localStorage.setItem('serviceProviderData', JSON.stringify(serviceProviderData));
 
     console.log('Categorias Selecionadas:', selectedCategories);
-    window.location.href = './../3-service-provider-profile/index.html';
+    window.location.href = './../service-provider-success/index.html';
   } else {
     alert('Por favor, selecione pelo menos uma categoria.');
   }

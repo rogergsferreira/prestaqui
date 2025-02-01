@@ -6,31 +6,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const changeProfileButton = document.querySelector('.change-profile');
     let userId;
     let userType;
-    let email;
 
     const checkUserTypeAndSession = async () => {
         try {
-            // Observação: Não funciona!! Então usaremos dados pre-definidos para continuar com a progressão do projeto
-            //
-            // const response = await fetch('http://localhost:3000/api/auth/get-session');
-            // if (response.status === 401) {
-            //     console.error('No active session');
-            //     return;
-            // }
-            // const data = await response.json();
+            const response = await fetch('http://localhost:3000/api/auth/get-session');
+            if (response.status === 401) {
+                console.error('No active session');
+                return;
+            }
+            const data = await response.json();
 
-            // if (!data.user) {
-            //     console.error('Nenhum usuário logado');
-            //     return;
-            // }
-            // userId = data.user.id;
-            // userType = data.user.userType;
+            if (!data.user) {
+                console.error('Nenhum usuário logado');
+                return;
+            }
 
-            email = localStorage.getItem('email');
-            userId = localStorage.getItem('userId');
-            userType = localStorage.getItem('userType');
-
-            alert("" + email + userId + userType);
+            userId = data.user.id;
+            userType = data.user.userType;
 
             const profileTypeResponse = await fetch(`http://localhost:3000/api/user/get-profile-type/${userId}`);
             const profileType = await profileTypeResponse.text();
@@ -52,9 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('http://localhost:3000/api/user/add-second-profile', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ userId, userType }),
+                body: JSON.stringify({ userType: userId }),
                 credentials: 'same-origin',
             });
 
@@ -62,8 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 alert(result.message);
-                if (userType == "customer") {
-                    window.location.href = './service-provider-registration/service-provider-category/index.html';
+                if (result.message.includes('customer')) {
+                    window.location.href = './service-provider-category/index.html';
                 } else {
                     switchProfileButton.style.display = 'block';
                     createSecondUserTypeButton.style.display = 'none';
@@ -77,14 +69,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     changeProfileButton.addEventListener('click', () => {
-        window.location.href = './change-account-details/index.html';
+        window.location.href = '/profile-setup';
     });
 
     switchProfileButton.addEventListener('click', () => {
         if (userType === 'customer') {
-            window.location.href = './../login/login-service-provider/index.html';
+            window.location.href = './service_provider_login.html';
         } else {
-            window.location.href = './../login/login-customer/index.html';
+            window.location.href = './customer_login.html';
         }
     });
 
@@ -96,8 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (response.ok) {
-                localStorage.clear();
-                window.location.href = './../../../public/index.html';
+                window.location.href = '/login';
             } else {
                 console.error('Erro ao encerrar sessão');
             }
@@ -107,29 +98,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     deleteAccountButton.addEventListener('click', async () => {
-        const confirmacao = confirm('Você tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.');
+        try {
+            const response = await fetch(`http://localhost:3000/api/user/delete-user/${userId}`, {
+                method: 'DELETE',
+                credentials: 'same-origin',
+            });
 
-        if (confirmacao) {
-            try {
-                const response = await fetch(`http://localhost:3000/api/user/delete-user/${userId}`, {
-                    method: 'DELETE',
-                    credentials: 'same-origin',
-                });
-
-                if (response.ok) {
-                    localStorage.clear();
-                    window.location.href = './../../../public/index.html';
-                } else {
-                    console.error('Erro ao excluir a conta');
-                }
-            } catch (error) {
-                console.error('Erro ao excluir a conta:', error);
+            if (response.ok) {
+                window.location.href = '/login';
+            } else {
+                console.error('Erro ao excluir a conta');
             }
-        } else {
-            console.log('A exclusão da conta foi cancelada.');
+        } catch (error) {
+            console.error('Erro ao excluir a conta:', error);
         }
     });
-
 
     checkUserTypeAndSession();
 });
