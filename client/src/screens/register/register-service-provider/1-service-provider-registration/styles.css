@@ -71,7 +71,10 @@ form input#cep,
 form input#neighborhood, 
 form input#address,
 form input#additional__info,
-form input#cellphone {
+form input#cellphone,
+form input#email,
+form input#password,
+form input#name {
     width: 320px;
 }
 
