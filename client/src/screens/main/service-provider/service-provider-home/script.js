@@ -106,10 +106,13 @@ document.addEventListener("DOMContentLoaded", function () {
 // Hamburguer menu javascript
 
 const hamburguerMenu = document.getElementById('hamburguer-menu'); 
+
 const navItems = document.getElementById('nav-items')
 const main = document.querySelector('main'); 
 
 const navItem = document.querySelectorAll('.nav-item'); 
+
+const closeButton = document.getElementById('close__button')
 
 hamburguerMenu.addEventListener('click', () => {
 
@@ -127,3 +130,9 @@ navItem.forEach(item => item.addEventListener('click', () => {
         main.classList.remove('active');
     }
 })); 
+
+closeButton.addEventListener('click', () => {
+    navItems.classList.remove('active'); 
+        hamburguerMenu.classList.remove('active');
+        main.classList.remove('active');
+})
