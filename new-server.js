@@ -1,8 +1,8 @@
 require('dotenv').config();
-const express = require('express'); 
-const mysql = require('mysql2'); 
-const bodyParser = require('body-parser'); 
-const cors = require('cors'); 
+const express = require('express');
+const mysql = require('mysql2');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app = express();
 app.use(bodyParser.json());
@@ -30,58 +30,205 @@ db.connect(error => {
     console.log('Connected to the database with ID ' + db.threadId);
 });
 
+// Validação dos dados de entrada para o registro
+const registerSchema = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().min(8).required(),
+    name: Joi.string().required(),
+    phone: Joi.string().required(),
+    cep: Joi.string().required(),
+    state: Joi.string().required(),
+    city: Joi.string().required(),
+    neighborhood: Joi.string().required(),
+    streetAddress: Joi.string().required(),
+    complement: Joi.string().allow(''),
+    avatarPath: Joi.string().allow(''),
+    userType: Joi.string().valid('service_provider', 'customer').required(),
+    categories: Joi.alternatives()
+        .conditional('userType', {
+            is: 'service_provider',
+            then: Joi.array().min(1).required(),
+            otherwise: Joi.forbidden()
+        })
+});
 
-// Endpoint para obter todos os usuários (GET)
-app.get('/usuarios', (req, res) => {
-    connection.query('SELECT * FROM usuarios', (error, results) => {
-        if (error) {
-            res.status(500).send('Erro ao obter usuários.'); // Responde com um erro se a consulta falhar
-            return;
-        }
-        res.json(results); // Responde com os resultados da consulta em formato JSON
+function insertCategories(userId, categories, res) {
+    const getServiceProviderIdQuery = `SELECT id FROM service_provider WHERE user_id = ?`; // get service_provider ID
+    db.query(getServiceProviderIdQuery, [userId], (err, spResult) => {
+        if (err) return res.status(500).send('Erro ao obter o ID do prestador de serviço');
+
+        const serviceProviderId = spResult[0].id;
+        const categoryValues = [];
+        let errorOccurred = false;
+
+        categories.forEach((categoryName, index) => {
+            const getCategoryIdQuery = `SELECT id FROM category WHERE category_name = ?`;
+            db.query(getCategoryIdQuery, [categoryName], (err, categoryResult) => {
+                if (err || categoryResult.length === 0) {
+                    errorOccurred = true;
+                    return res.status(400).send(`Categoria não encontrada: ${categoryName}`);
+                }
+
+                const categoryId = categoryResult[0].id;
+                categoryValues.push([serviceProviderId, categoryId]);
+
+                if (categoryValues.length === categories.length && !errorOccurred) {
+                    const insertHasCategoryQuery = `INSERT INTO has_category (service_provider_id, category_id) VALUES ?`;
+                    db.query(insertHasCategoryQuery, [categoryValues], (err) => {
+                        if (err) return res.status(500).send('Erro ao inserir categorias');
+                        res.send('Usuário registrado com sucesso!');
+                    });
+                }
+            });
+        });
     });
-});
+}
 
-// Endpoint para obter um usuário por ID (GET)
-app.get('/usuarios/:id', (req, res) => {
-    const { id } = req.params; // Obtém o ID do usuário dos parâmetros da URL
-    connection.query('SELECT * FROM usuarios WHERE id = ?', [id], (error, results) => {
-        if (error) {
-            res.status(500).send('Erro ao obter usuário.'); // Responde com um erro se a consulta falhar
-            return;
-        }
-        res.json(results[0]); // Responde com o usuário encontrado em formato JSON
+async function register(req, res) {
+    const { error } = registerSchema.validate(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    const {
+        email,
+        password,
+        name,
+        phone,
+        cep,
+        state,
+        city,
+        neighborhood,
+        streetAddress,
+        complement,
+        avatarPath,
+        userType,
+        categories
+    } = req.body;
+
+    try {
+        db.query(`SELECT * FROM user WHERE email = ?`, [email], async (err, result) => {
+            if (err) return res.status(500).send('Erro no banco de dados');
+
+            if (result.length > 0) {
+                return res.status(400).send('Este usuário já está registrado');
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            db.query(
+                `INSERT INTO user (email, password, name, phone, cep, state, city, neighborhood, street_address, complement, avatar_path)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [email, hashedPassword, name, phone, cep, state, city, neighborhood, streetAddress, complement, avatarPath],
+                (err, result) => {
+                    if (err) return res.status(500).send('Erro ao registrar o usuário');
+
+                    const userId = result.insertId;
+                    const tableName = userType === 'service_provider' ? 'service_provider' : 'customer';
+
+                    db.query(
+                        `INSERT INTO ${tableName} (user_id) VALUES (?)`,
+                        [userId],
+                        (err) => {
+                            if (err) return res.status(500).send('Erro ao registrar o tipo de usuário');
+
+                            if (userType === 'service_provider' && categories && categories.length > 0) {
+                                // Inserir categorias na tabela has_category
+                                insertCategories(userId, categories, res);
+                            } else {
+                                res.send('Usuário registrado com sucesso!');
+                            }
+                        }
+                    );
+
+                    // categories.forEach(category => {
+
+                    //     console.log('TESTE AQUI BIZARRO!')
+
+                    //     db.query('SELECT id FROM category WHERE category_name = ?', [category], async (err, result) => {
+                    //         if (err) return res.status(500).send('Database error');
+
+                    //         db.query(
+                    //             'INSERT INTO has_category (service_provider_id, category_id) VALUES (?, ?)', [userId, result],
+                    //             (err) => {
+                    //                 if (err) return res.status(500).send('Database error');
+                    //                 res.send('Category has been added to service provider')
+                    //             }
+                    //         )
+
+                    //     })
+                    // });
+                }
+            );
+        });
+    } catch (error) {
+        res.status(500).send('Internal server error');
+        console.error(error);
+    }
+};
+
+async function login(req, res) {
+    const { email, password, userType } = req.body;
+
+    if (req.session.user) {
+        return res.status(400).send('You are already logged in');
+    }
+
+    const tableName = userType === 'service_provider' ? 'service_provider' : 'customer';
+
+    try {
+        db.query(`SELECT * FROM user WHERE email = ?`, [email], async (err, result) => {
+            if (err) return res.status(500).send('Database error');
+
+            if (result.length === 0 || !(await bcrypt.compare(password, result[0].password))) {
+                return res.status(400).send('Invalid email or password');
+            }
+
+            const userId = result[0].id;
+
+            db.query(`SELECT * FROM ${tableName} WHERE user_id = ?`, [userId], (err, userTypeResult) => {
+                if (err) return res.status(500).send('Database error');
+
+                if (userTypeResult.length === 0) {
+                    return res.status(400).send('User not registered as ' + userType);
+                }
+
+                req.session.user = { id: userId, email: email, userType };
+                req.session.save((err) => {
+                    if (err) return res.status(500).send('Failed to save session');
+                    res.status(200).json(req.session.user); // res.status(200).send('Logged in successfully!');
+                });
+            });
+
+            // req.session.user = { id: userId, email: email, userType: userType };
+
+        });
+    } catch (error) {
+        res.status(500).send('Internal server error');
+        console.error(error);
+    }
+
+    req.session.save((err) => {
+        if (err) return res.status(500).send('Failed to save session');
+        res.status(200).send('Logged in successfully!');
     });
-});
 
-// Endpoint para atualizar um usuário (PUT)
-app.put('/usuarios/:id', (req, res) => {
-    const { id } = req.params; // Obtém o ID do usuário dos parâmetros da URL
-    const { nome, email, senha } = req.body; // Obtém os novos dados do usuário do corpo da requisição
-    const sql = 'UPDATE usuarios SET nome = ?, email = ?, senha = ? WHERE id = ?'; // SQL para atualizar um usuário
-    connection.query(sql, [nome, email, senha, id], (error, results) => {
-        if (error) {
-            res.status(500).send('Erro ao atualizar usuário.'); // Responde com um erro se a atualização falhar
-            return;
-        }
-        res.send('Usuário atualizado com sucesso.'); // Responde com sucesso se a atualização for bem-sucedida
+};
+
+async function logout(req, res) {
+    // if (!req.session.user) {
+    //     return res.status(401).send('You are not logged in');
+    // }
+
+    req.session.destroy((err) => {
+        if (err) return res.status(500).send('Failed to log out');
+        res.send('Logged out successfully');
     });
-});
+};
 
-// Endpoint para deletar um usuário (DELETE)
-app.delete('/usuarios/:id', (req, res) => {
-    const { id } = req.params; // Obtém o ID do usuário dos parâmetros da URL
-    connection.query('DELETE FROM usuarios WHERE id = ?', [id], (error, results) => {
-        if (error) {
-            res.status(500).send('Erro ao deletar usuário.'); // Responde com um erro se a deleção falhar
-            return;
-        }
-        res.send('Usuário deletado com sucesso.'); // Responde com sucesso se a deleção for bem-sucedida
-    });
-});
+const getSession = (req, res) => {
+    if (req.session.user) {
+        res.json({ user: req.session.user });
+    } else {
+        res.status(401).json({ message: 'No active session' });
+    }
+};
 
-// Iniciar o servidor
-const PORT = 3000; // Define a porta em que o servidor será executado
-app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`); // Confirma que o servidor está rodando
-});
