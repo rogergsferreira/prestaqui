@@ -72,7 +72,7 @@ async function register(req, res) {
         neighborhood,
         streetAddress,
         complement,
-        avatar_path,
+        avatarPath,
         userType,
         categories
     } = req.body;

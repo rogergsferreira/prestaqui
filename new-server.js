@@ -30,18 +30,6 @@ db.connect(error => {
     console.log('Connected to the database with ID ' + db.threadId);
 });
 
-// Endpoint para adicionar um usuário (POST)
-app.post('/user', (req, res) => {
-    const { nome, email, senha } = req.body;
-    const sql = 'INSERT INTO user (nome, email, senha) VALUES (?, ?, ?)';
-    connection.query(sql, [nome, email, senha], (error, results) => {
-        if (error) {
-            res.status(500).send('Erro ao adicionar usuário.');
-            return;
-        }
-        res.status(201).send('Usuário adicionado com sucesso.');
-    });
-});
 
 // Endpoint para obter todos os usuários (GET)
 app.get('/usuarios', (req, res) => {
