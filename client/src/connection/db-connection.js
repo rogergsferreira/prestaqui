@@ -13,4 +13,10 @@ db.connect((err) => {
     console.log('Connected to the MySQL database!');
 });
 
-module.exports = db;
+db.connect(error => {
+    if (error) {
+        console.error('Error connecting to the database: ' + error.stack);
+        return;
+    }
+    console.log('Connected to the database with ID ' + db.threadId);
+});
