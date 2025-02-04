@@ -2,8 +2,9 @@
 require('dotenv').config();
 const crypto = require('crypto');
 const fs = require('fs');
-const db = require('../connection/db-connection');
+const db = require('./client/src/connection/db-connection');
 const express = require('express');
+const session = require('express-session');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
@@ -11,18 +12,18 @@ const Joi = require('joi');
 const util = require('util');
 const router = require('express').Router();
 
-// generate-secret-key.js
-const secretKey = crypto.randomBytes(32).toString('hex');
+// // generate-secret-key.js
+// const secretKey = crypto.randomBytes(8).toString('hex');
 
-// Adiciona ou atualiza a chave no arquivo .env
-const envFilePath = './.env';
-const envContent = fs.existsSync(envFilePath) ? fs.readFileSync(envFilePath, 'utf-8') : '';
-const updatedContent = envContent.includes('SECRET_KEY=')
-    ? envContent.replace(/SECRET_KEY=.*/, `SECRET_KEY=${secretKey}`)
-    : `${envContent}\nSECRET_KEY=${secretKey}`.trim();
+// // Adiciona ou atualiza a chave no arquivo .env
+// const envFilePath = './.env';
+// const envContent = fs.existsSync(envFilePath) ? fs.readFileSync(envFilePath, 'utf-8') : '';
+// const updatedContent = envContent.includes('SECRET_KEY=')
+//     ? envContent.replace(/SECRET_KEY=.*/, `SECRET_KEY=${secretKey}`)
+//     : `${envContent}\nSECRET_KEY=${secretKey}`.trim();
 
-fs.writeFileSync(envFilePath, updatedContent, 'utf-8');
-console.log('Generated SECRET_KEY:', secretKey);
+// fs.writeFileSync(envFilePath, updatedContent, 'utf-8');
+// console.log('Generated SECRET_KEY:', secretKey);
 
 
 // server.js
