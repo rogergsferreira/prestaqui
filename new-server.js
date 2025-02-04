@@ -8,6 +8,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+
+// db-connection.js
 const db = mysql.createConnection({
     port: process.env.DB_PORT,
     host: process.env.DB_HOST,
@@ -21,7 +23,6 @@ db.connect((err) => {
     console.log('Connected to the MySQL database!');
 });
 
-// Conexão com o banco de dados
 db.connect(error => {
     if (error) {
         console.error('Error connecting to the database: ' + error.stack);
@@ -30,7 +31,8 @@ db.connect(error => {
     console.log('Connected to the database with ID ' + db.threadId);
 });
 
-// Validação dos dados de entrada para o registro
+
+// auth-controller.js
 const registerSchema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().min(8).required(),
@@ -138,24 +140,6 @@ async function register(req, res) {
                             }
                         }
                     );
-
-                    // categories.forEach(category => {
-
-                    //     console.log('TESTE AQUI BIZARRO!')
-
-                    //     db.query('SELECT id FROM category WHERE category_name = ?', [category], async (err, result) => {
-                    //         if (err) return res.status(500).send('Database error');
-
-                    //         db.query(
-                    //             'INSERT INTO has_category (service_provider_id, category_id) VALUES (?, ?)', [userId, result],
-                    //             (err) => {
-                    //                 if (err) return res.status(500).send('Database error');
-                    //                 res.send('Category has been added to service provider')
-                    //             }
-                    //         )
-
-                    //     })
-                    // });
                 }
             );
         });
@@ -214,9 +198,6 @@ async function login(req, res) {
 };
 
 async function logout(req, res) {
-    // if (!req.session.user) {
-    //     return res.status(401).send('You are not logged in');
-    // }
 
     req.session.destroy((err) => {
         if (err) return res.status(500).send('Failed to log out');
