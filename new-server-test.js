@@ -651,9 +651,23 @@ router.get('/get-profile-type/:userId', getProfileType);
 router.post('/add-categories', addCategories);
 router.get('/get-categories/:id', getUserCategories);
 
-app.use('/api/user/', authenticateSession, getUsers, getUserById, updateUser, deleteUser, addSecondProfile, getProfileType, addCategories, getUserCategories);
-app.use('/api/auth/', register, login, logout, getSession);
-app.use('/api/services/', authenticateSession, getServicesByCustomerId, deleteServiceById);
+app.use('/api/auth/', login);
+app.use('/api/auth/', register);
+app.use('/api/auth/', logout);
+app.use('/api/auth/', getSession);
+
+app.use('/api/user/', authenticateSession, getUsers); 
+app.use('/api/user/', authenticateSession, getUserById); 
+app.use('/api/user/', authenticateSession, updateUser); 
+app.use('/api/user/', authenticateSession, deleteUser); 
+app.use('/api/user/', authenticateSession, addSecondProfile); 
+app.use('/api/user/', authenticateSession, getProfileType); 
+app.use('/api/user/', authenticateSession, addCategories);
+app.use('/api/user/', authenticateSession, getUserCategories);  
+
+
+app.use('/api/services/', authenticateSession, getServicesByCustomerId);
+app.use('/api/services/', authenticateSession, deleteServiceById);
 
 app.listen(3000, () => {
     console.log('Server running on port 3000');
