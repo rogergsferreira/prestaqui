@@ -634,40 +634,38 @@ async function deleteServiceById(req, res) {
     });
 }
 
-router.post('/register', register);
-router.post('/login', login);
-router.post('/logout', logout);
-router.get('/get-session', getSession);
+// Routers
+const authRouter = express.Router();
+const userRouter = express.Router();
+const servicesRouter = express.Router();
 
-router.get('/get-services/:customer_id', getServicesByCustomerId);
-router.delete('/delete-service/:id', deleteServiceById);
+// Rotas de Autenticação
+authRouter.post('/register', register);
+authRouter.post('/login', login);
+authRouter.post('/logout', logout);
+authRouter.get('/get-session', getSession);
 
-router.get('/get-users', getUsers);
-router.get('/get-user/:id', getUserById);
-router.put('/update-user/:id', updateUser);
-router.delete('/delete-user/:id', deleteUser);
-router.post('/add-second-profile', addSecondProfile);
-router.get('/get-profile-type/:userId', getProfileType);
-router.post('/add-categories', addCategories);
-router.get('/get-categories/:id', getUserCategories);
+// Rotas de Usuário (Protegidas)
+userRouter.use(authenticateSession);
 
-app.use('/api/auth/', login);
-app.use('/api/auth/', register);
-app.use('/api/auth/', logout);
-app.use('/api/auth/', getSession);
+userRouter.get('/get-users', getUsers);
+userRouter.get('/get-user/:id', getUserById);
+userRouter.put('/update-user/:id', updateUser);
+userRouter.delete('/delete-user/:id', deleteUser);
+userRouter.post('/add-second-profile', addSecondProfile);
+userRouter.get('/get-profile-type/:userId', getProfileType);
+userRouter.post('/add-categories', addCategories);
+userRouter.get('/get-categories/:id', getUserCategories);
 
-app.use('/api/user/', authenticateSession, getUsers); 
-app.use('/api/user/', authenticateSession, getUserById); 
-app.use('/api/user/', authenticateSession, updateUser); 
-app.use('/api/user/', authenticateSession, deleteUser); 
-app.use('/api/user/', authenticateSession, addSecondProfile); 
-app.use('/api/user/', authenticateSession, getProfileType); 
-app.use('/api/user/', authenticateSession, addCategories);
-app.use('/api/user/', authenticateSession, getUserCategories);  
+// Rotas de Serviços (Protegidas)
+servicesRouter.use(authenticateSession);
 
+servicesRouter.get('/get-services/:customer_id', getServicesByCustomerId);
+servicesRouter.delete('/delete-service/:id', deleteServiceById);
 
-app.use('/api/services/', authenticateSession, getServicesByCustomerId);
-app.use('/api/services/', authenticateSession, deleteServiceById);
+app.use('/api/auth', authRouter);
+app.use('/api/user', userRouter);
+app.use('/api/services', servicesRouter);
 
 app.listen(3000, () => {
     console.log('Server running on port 3000');
