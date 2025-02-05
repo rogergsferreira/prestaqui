@@ -1,14 +1,14 @@
 require('dotenv').config();
-const crypto = require('crypto');
-const fs = require('fs');
-const db = require('./client/src/connection/db-connection');
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
+const crypto = require('crypto');
+const fs = require('fs');
 const util = require('util');
+const db = require('./client/src/connection/db-connection');
 
 const app = express();
 
@@ -177,11 +177,7 @@ async function register(req, res) {
 
 async function login(req, res) {
     const { email, password, userType } = req.body;
-
-    if (req.session.user) {
-        return res.status(400).send('You are already logged in');
-    }
-
+    
     const tableName = userType === 'service_provider' ? 'service_provider' : 'customer';
 
     try {
@@ -204,8 +200,8 @@ async function login(req, res) {
                 req.session.user = { id: userId, email: email, userType };
                 req.session.save((err) => {
                     if (err) return res.status(500).send('Failed to save session');
-                    res.status(200).json(req.session.user);
                     res.status(200).send('Logged in successfully!');
+                    console.log(req.session.user); // Print dos dados do usuário ao fazer login para teste
                 });
             });
         });
@@ -213,13 +209,8 @@ async function login(req, res) {
         res.status(500).send('Internal server error');
         console.error(error);
     }
+}
 
-    req.session.save((err) => {
-        if (err) return res.status(500).send('Failed to save session');
-        res.status(200).send('Logged in successfully!');
-    });
-
-};
 
 async function logout(req, res) {
 
