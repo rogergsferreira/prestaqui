@@ -200,8 +200,7 @@ async function login(req, res) {
                 req.session.user = { id: userId, email: email, userType };
                 req.session.save((err) => {
                     if (err) return res.status(500).send('Failed to save session');
-                    res.status(200).json({ message: 'Logged in successfully!' });
-                    // console.log(req.session.user); // Print dos dados do usuário ao fazer login para teste
+                    res.status(200).json({ message: ('Logged in successfully!') });
                 });
             });
         });
@@ -220,11 +219,10 @@ async function logout(req, res) {
     });
 };
 
-// A função é redundante pois já existe autenticação no middleware
-async function getSession(req, res) {
+const getSession = (req, res) => {
     if (req.session.user) {
         res.json({ user: req.session.user });
-    } else if (!req.session.user) {
+    } else {
         res.status(401).json({ message: 'No active session' });
     }
 };
@@ -501,7 +499,7 @@ const addSecondProfile = async (req, res) => {
 };
 
 const getProfileType = async (req, res) => {
-    const { userId } = req.session.user.id;
+    const { userId } = req.params;
 
     if (!userId) {
         return res.status(400).send('User ID is required');
@@ -653,7 +651,7 @@ userRouter.get('/get-user/:id', getUserById);
 userRouter.put('/update-user/:id', updateUser);
 userRouter.delete('/delete-user/:id', deleteUser);
 userRouter.post('/add-second-profile', addSecondProfile);
-userRouter.get('/get-profile-type', getProfileType);
+userRouter.get('/get-profile-type/:userId', getProfileType);
 userRouter.post('/add-categories', addCategories);
 userRouter.get('/get-categories/:id', getUserCategories);
 

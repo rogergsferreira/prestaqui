@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const checkUserTypeAndSession = async () => {
         try {
-            // Observação: Não funciona!! Então usaremos dados pre-definidos para continuar com a progressão do projeto
-            
+            // Observação: Não funciona!! Então usaremos dados predefinidos para continuar com a progressão do projeto
+
             const response = await fetch('http://localhost:3000/api/auth/get-session');
             if (response.status === 401) {
                 console.error('No active session');
