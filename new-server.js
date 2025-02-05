@@ -219,13 +219,74 @@ async function logout(req, res) {
     });
 };
 
-const getSession = (req, res) => {
-    if (req.session.user) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ERRO PRINCIPAL!!
+async function getSession(req, res) {
+    // Verifica se há uma sessão ativa com o usuário logado
+    if (req.session && req.session.user) {
+        // Se a sessão estiver ativa, retorna os dados do usuário
         res.json({ user: req.session.user });
     } else {
+        // Se não houver sessão ativa, retorna erro 401
         res.status(401).json({ message: 'No active session' });
     }
-};
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // User controller functions:
