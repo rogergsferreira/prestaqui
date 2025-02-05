@@ -221,13 +221,13 @@ async function logout(req, res) {
 };
 
 // A função é redundante pois já existe autenticação no middleware
-// async function getSession(req, res) {
-//     if (req.session.user) {
-//         res.json({ user: req.session.user });
-//     } else {
-//         res.status(401).json({ message: 'No active session' });
-//     }
-// };
+async function getSession(req, res) {
+    if (req.session.user) {
+        res.json({ user: req.session.user });
+    } else if (!req.session.user) {
+        res.status(401).json({ message: 'No active session' });
+    }
+};
 
 
 // User controller functions:
@@ -644,7 +644,7 @@ const servicesRouter = express.Router();
 authRouter.post('/register', register);
 authRouter.post('/login', login);
 authRouter.post('/logout', logout);
-// authRouter.get('/get-session', getSession);
+authRouter.get('/get-session', getSession);
 
 // User routes (Protecteds)
 userRouter.use(authenticateSession);

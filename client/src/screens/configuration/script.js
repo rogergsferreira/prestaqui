@@ -11,24 +11,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const checkUserTypeAndSession = async () => {
         try {
             // Observação: Não funciona!! Então usaremos dados pre-definidos para continuar com a progressão do projeto
-            //
-            // const response = await fetch('http://localhost:3000/api/auth/get-session');
-            // if (response.status === 401) {
-            //     console.error('No active session');
-            //     return;
-            // }
-            // const data = await response.json();
+            
+            const response = await fetch('http://localhost:3000/api/auth/get-session');
+            if (response.status === 401) {
+                console.error('No active session');
+                return;
+            }
+            const data = await response.json();
 
-            // if (!data.user) {
-            //     console.error('Nenhum usuário logado');
-            //     return;
-            // }
-            // userId = data.user.id;
-            // userType = data.user.userType;
+            if (!data.user) {
+                console.error('Nenhum usuário logado');
+                return;
+            }
+            userId = data.user.id;
+            userType = data.user.userType;
 
-            email = localStorage.getItem('email');
-            userId = localStorage.getItem('userId');
-            userType = localStorage.getItem('userType');
+            // email = localStorage.getItem('email');
+            // userId = localStorage.getItem('userId');
+            // userType = localStorage.getItem('userType');
 
             alert("" + email + userId + userType);
 
