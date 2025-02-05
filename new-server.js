@@ -9,12 +9,16 @@ const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
 const util = require('util');
-const router = require('express').Router();
 
-// generate-secret-key.js
+const app = express();
+
+app.use(cors());
+app.use(bodyParser.json());
+
+
+// SECRET_KEY generation:
 const secretKey = crypto.randomBytes(8).toString('hex');
 
-// Adiciona ou atualiza a chave no arquivo .env
 const envFilePath = './.env';
 const envContent = fs.existsSync(envFilePath) ? fs.readFileSync(envFilePath, 'utf-8') : '';
 const updatedContent = envContent.includes('SECRET_KEY=')
@@ -22,15 +26,9 @@ const updatedContent = envContent.includes('SECRET_KEY=')
     : `${envContent}\nSECRET_KEY=${secretKey}`.trim();
 
 fs.writeFileSync(envFilePath, updatedContent, 'utf-8');
-console.log('Generated SECRET_KEY:', secretKey);
 
 
-// server.js
-const app = express();
-
-app.use(cors());
-app.use(bodyParser.json());
-
+// Session creation:
 app.use(session({
     secret: process.env.SECRET_KEY,
     resave: false,
@@ -39,11 +37,8 @@ app.use(session({
 }));
 
 
-// auth-middleware.js
+// Middleware - Autentication:
 const authenticateSession = (req, res, next) => {
-    /* Os dados da sessão estão sempre sendo desfeitos por um erro desconhecido. 
-     Sendo assim, por questões para o desenvolvimento do projeto, aqui estará definido 
-     para retornar sempre o score 200 */
 
     if (!req.session.user) {
         return res.status(401).send('Unauthorized');
@@ -64,7 +59,7 @@ const authenticateSession = (req, res, next) => {
 };
 
 
-// auth-controller.js
+// Auth controller functions:
 const registerSchema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().min(8).required(),
@@ -87,7 +82,7 @@ const registerSchema = Joi.object({
 });
 
 function insertCategories(userId, categories, res) {
-    const getServiceProviderIdQuery = `SELECT id FROM service_provider WHERE user_id = ?`; // get service_provider ID
+    const getServiceProviderIdQuery = `SELECT id FROM service_provider WHERE user_id = ?`;
     db.query(getServiceProviderIdQuery, [userId], (err, spResult) => {
         if (err) return res.status(500).send('Erro ao obter o ID do prestador de serviço');
 
@@ -165,7 +160,6 @@ async function register(req, res) {
                             if (err) return res.status(500).send('Erro ao registrar o tipo de usuário');
 
                             if (userType === 'service_provider' && categories && categories.length > 0) {
-                                // Inserir categorias na tabela has_category
                                 insertCategories(userId, categories, res);
                             } else {
                                 res.send('Usuário registrado com sucesso!');
@@ -210,12 +204,10 @@ async function login(req, res) {
                 req.session.user = { id: userId, email: email, userType };
                 req.session.save((err) => {
                     if (err) return res.status(500).send('Failed to save session');
-                    res.status(200).json(req.session.user); // res.status(200).send('Logged in successfully!');
+                    res.status(200).json(req.session.user);
+                    res.status(200).send('Logged in successfully!');
                 });
             });
-
-            // req.session.user = { id: userId, email: email, userType: userType };
-
         });
     } catch (error) {
         res.status(500).send('Internal server error');
@@ -246,11 +238,10 @@ const getSession = (req, res) => {
 };
 
 
-// user-controller.js
-const queryAsync = util.promisify(db.query).bind(db);
-// facilita muito o uso de Promises com funções de callback no Node.js
-
+// User controller functions:
 async function getUserCategories(req, res) {
+    const queryAsync = util.promisify(db.query).bind(db);
+
     const { id } = req.params;
 
     if (!id) {
@@ -279,7 +270,6 @@ async function getUserCategories(req, res) {
     }
 }
 
-// Obtém todos os usuários
 async function getUsers(req, res) {
     db.query(`SELECT * FROM user`, (err, result) => {
         if (err) {
@@ -295,7 +285,6 @@ async function getUsers(req, res) {
     });
 }
 
-// Obtém um usuário específico por ID
 async function getUserById(req, res) {
     const { id } = req.params;
 
@@ -317,7 +306,6 @@ async function getUserById(req, res) {
     });
 }
 
-// Atualiza os dados de um usuário
 async function updateUser(req, res) {
     const { id } = req.params;
     const {
@@ -411,7 +399,6 @@ async function updateUser(req, res) {
     });
 }
 
-// Exclui um usuário e suas dependências
 async function deleteUser(req, res) {
     const { id } = req.params;
 
@@ -429,8 +416,6 @@ async function deleteUser(req, res) {
             console.error(message, error);
             return db.rollback(() => res.status(500).send(message));
         };
-
-        // verificar se há agendamentos não concluídos ou não cancelados
         const checkSchedulingQuery = `
             SELECT * FROM solicitation
             WHERE (service_provider_id IN (SELECT id FROM service_provider WHERE user_id = ?)
@@ -441,21 +426,15 @@ async function deleteUser(req, res) {
             if (err) return handleError(err, 'Failed to check solicitation');
 
             if (results.length > 0) {
-                // existem agendamentos ativos, cancelar exclusão
                 return db.rollback(() => res.status(400).send('User still has active services'));
             }
-
-            // exclusão em cascata
             try {
-                // excluir registros de 'has_category' relacionados ao 'service_provider' do usuário
                 const deleteHasCategoryQuery = `
                     DELETE hc FROM has_category hc
                     JOIN service_provider sp ON hc.service_provider_id = sp.id
                     WHERE sp.user_id = ?`;
                 db.query(deleteHasCategoryQuery, [id], (err) => {
                     if (err) return handleError(err, 'Failed to delete from has_category');
-
-                    // excluir registros de 'solicitation' onde o usuário é um 'service_provider' ou 'customer'
                     const deleteSchedulingQuery = `
                         DELETE FROM solicitation
                         WHERE service_provider_id IN (SELECT id FROM service_provider WHERE user_id = ?)
@@ -463,17 +442,14 @@ async function deleteUser(req, res) {
                     db.query(deleteSchedulingQuery, [id, id], (err) => {
                         if (err) return handleError(err, 'Failed to delete from solicitation');
 
-                        // excluir 'service_provider' associado ao usuário
                         const deleteServiceProviderQuery = `DELETE FROM service_provider WHERE user_id = ?`;
                         db.query(deleteServiceProviderQuery, [id], (err) => {
                             if (err) return handleError(err, 'Failed to delete from service_provider');
 
-                            // excluir 'customer' associado ao usuário
                             const deleteCustomerQuery = `DELETE FROM customer WHERE user_id = ?`;
                             db.query(deleteCustomerQuery, [id], (err) => {
                                 if (err) return handleError(err, 'Failed to delete from customer');
 
-                                // excluir o usuário da tabela 'user'
                                 const deleteUserQuery = `DELETE FROM user WHERE id = ?`;
                                 db.query(deleteUserQuery, [id], (err, result) => {
                                     if (err || result.affectedRows === 0) {
@@ -482,13 +458,11 @@ async function deleteUser(req, res) {
                                         );
                                     }
 
-                                    // afirmação do commit
                                     db.commit((commitError) => {
                                         if (commitError) {
                                             return db.rollback(() => res.status(500).send('Failed to commit transaction'));
                                         }
 
-                                        // destroí a sessão se o usuário excluído for o usuário logado
                                         if (req.session.user && req.session.user.id === parseInt(id)) {
                                             req.session.destroy(() => res.send('User deleted and session destroyed'));
                                         } else {
@@ -542,12 +516,9 @@ const getProfileType = async (req, res) => {
     }
 
     try {
-        // verificar se é customer
         const customerQuery = 'SELECT * FROM customer WHERE user_id = ?';
         db.query(customerQuery, [userId], (err, customerResult) => {
             if (err) throw err;
-
-            // verificar se é service_provider
             const providerQuery = 'SELECT * FROM service_provider WHERE user_id = ?';
             db.query(providerQuery, [userId], (providerErr, providerResult) => {
                 if (providerErr) throw providerErr;
@@ -577,7 +548,6 @@ async function addCategories(req, res) {
     }
 
     try {
-        // get ID do prestador de serviço
         const getServiceProviderIdQuery = `SELECT id FROM service_provider WHERE user_id = ?`;
         db.query(getServiceProviderIdQuery, [userId], (err, spResult) => {
             if (err) {
@@ -595,7 +565,6 @@ async function addCategories(req, res) {
             let pendingQueries = categories.length;
 
             categories.forEach((categoryName) => {
-                // get ID da categoria
                 const getCategoryIdQuery = `SELECT id FROM category WHERE category_name = ?`;
                 db.query(getCategoryIdQuery, [categoryName], (err, categoryResult) => {
                     if (err || categoryResult.length === 0) {
@@ -630,8 +599,7 @@ async function addCategories(req, res) {
 }
 
 
-// services-controller.js
-// obtém todos os serviços de um cliente específico
+// Service controller functions:
 async function getServicesByCustomerId(req, res) {
     const { customer_id } = req.params;
 
@@ -653,7 +621,6 @@ async function getServicesByCustomerId(req, res) {
     });
 }
 
-// Exclui um serviço específico
 async function deleteServiceById(req, res) {
     const { id } = req.params;
 
@@ -675,32 +642,37 @@ async function deleteServiceById(req, res) {
     });
 }
 
-// auth-routes.js
-router.post('/register', authController.register);
-router.post('/login', authController.login);
-router.post('/logout', authController.logout);
-router.get('/get-session', authController.getSession);
 
+// Routers
+const authRouter = express.Router();
+const userRouter = express.Router();
+const servicesRouter = express.Router();
 
-// services-routes.js
-router.get('/get-services/:customer_id', servicesController.getServicesByCustomerId);
-router.delete('/delete-service/:id', servicesController.deleteServiceById);
+// Auth routes:
+authRouter.post('/register', register);
+authRouter.post('/login', login);
+authRouter.post('/logout', logout);
+authRouter.get('/get-session', getSession);
 
-// user-routes.js
-router.get('/get-users', userController.getUsers);
-router.get('/get-user/:id', userController.getUserById);
-router.put('/update-user/:id', userController.updateUser);
-router.delete('/delete-user/:id', userController.deleteUser);
-router.post('/add-second-profile', userController.addSecondProfile);
-router.get('/get-profile-type/:userId', userController.getProfileType);
-router.post('/add-categories', userController.addCategories);
-router.get('/get-categories/:id', userController.getUserCategories);
+// User routes (Protecteds)
+userRouter.use(authenticateSession);
+userRouter.get('/get-users', getUsers);
+userRouter.get('/get-user/:id', getUserById);
+userRouter.put('/update-user/:id', updateUser);
+userRouter.delete('/delete-user/:id', deleteUser);
+userRouter.post('/add-second-profile', addSecondProfile);
+userRouter.get('/get-profile-type/:userId', getProfileType);
+userRouter.post('/add-categories', addCategories);
+userRouter.get('/get-categories/:id', getUserCategories);
 
+// Serice routes (Protecteds)
+servicesRouter.use(authenticateSession);
+servicesRouter.get('/get-services/:customer_id', getServicesByCustomerId);
+servicesRouter.delete('/delete-service/:id', deleteServiceById);
 
-// server.js
-app.use('/api/user/', authenticateSession, userRoutes);
-app.use('/api/auth/', authRoutes);
-app.use('/api/services/', authenticateSession, servicesRoutes);
+app.use('/api/auth', authRouter);
+app.use('/api/user', userRouter);
+app.use('/api/services', servicesRouter);
 
 app.listen(3000, () => {
     console.log('Server running on port 3000');
