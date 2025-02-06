@@ -23,6 +23,7 @@ p {
     font-weight: 400;
     font-size: 1.2em;
     padding: 20px;
+    font-weight: bold;
 }
 
 p, button {
@@ -45,7 +46,6 @@ button {
     border: none;
     height: 40px;
     width: 310px;
-    text-transform: uppercase;
     font-weight: 700;
     font-size: .9em;
     transition: all .2s;
@@ -56,6 +56,22 @@ button:hover{
     box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.25);
 }
 
+
+@media (min-width: 700px){
+    p {
+        /* background-color: red; */
+        width: 100%;
+        font-size: 1.1em;
+    }
+
+    br {
+        display: none;
+    }
+
+    img{
+        width: 200px;
+    }
+}
 
 
 
