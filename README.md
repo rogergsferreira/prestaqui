@@ -8,18 +8,18 @@ Desse modo, permite a comunicação entre cliente e prestador e o gerenciamento 
 <details>
   <summary> Link para a aplicação 🔗</summary>
   <br>
-  Para acessar o nosso projeto, acesse o link <a href="https://www.figma.com/design/hhf3yLfjxGL4UViC2ioBC2/PrestAqui?node-id=0-1&t=3cxi00G0lFLJdixA-1" target="_blank"> <strong> CLICANDO AQUI</strong></a>
+  Para acessar o nosso projeto, acesse o link <a href="https://www.figma.com/design/hhf3yLfjxGL4UViC2ioBC2/PrestAqui?node-id=0-1&t=3cxi00G0lFLJdixA-1" target="_blank"> <strong>aqui</strong></a>
 </details>
 
 
 <details>
-  <summary> Fluxo do cliente 🔗</summary>
+  <summary> Fluxo do cliente  🔗</summary>
   <br>
   
 
 O fluxo da aplicação inicia-se com as telas <em>**Main-screen**</em> e <em>**Login-Screen,**</em> onde o usuário iniciará o seu fluxo no PrestAqui.
 
-De primeiro momento, o cliente irá selecionar o botão <em>"**ESTOU À PROCURA DE UM SERVIÇO**"</em> e será redirecionado para uma tela onde poderá preencher as suas informações de login e senha.
+De primeiro momento, o cliente irá selecionar o botão <em>"**Estou em busca de prestadores**"</em> e será redirecionado para uma tela onde poderá preencher as suas informações de login e senha.
 
 ![image](https://github.com/user-attachments/assets/f0f0d53b-4e03-471d-ba62-c8f2ca31d3b9)
 
@@ -48,17 +48,17 @@ Além disso , o cliente também poderá visualizar o histórico dos agendamentos
 
 ![image](https://github.com/user-attachments/assets/feca4446-1d74-41f4-8f64-0ff11371e9f9)
 
-Também será possível fazer o logout da aplicação, clicando em "<em>**SAIR**</em>", bem como criar um "**NOVO AGENDAMENTO**":
+Também será possível fazer o logout da aplicação, clicando em "<em>**Sair**</em>", bem como criar um "**Nova solicitação**":
 
 ![image](https://github.com/user-attachments/assets/f8eaf5c9-42f6-4aee-8163-e38ef7569038)
 
-**Supondo que o cliente opte por criar um novo agendamento:**
+**Supondo que o cliente opte por criar uma nova solicitaão de serviço:**
 
 1. Primeiro, será disponibilizada uma tela contendo os filtros de pesquisa para que o cliente possa localizar o prestador que melhor atenda suas necessidades e demandas. Para facilitar a busca, ele poderá estabelecer alguns filtros para auxiliá-lo na escolha: Categoria, estado e cidade.
 
 Feita essa escolha, ele também poderá acionar o Whatsapp do prestador e agendar o horário que melhor atenda as necesidades. 
 
-Posteriormente, clicará em "<em>**AGENDAR VISITA**</em>":
+Posteriormente, clicará em "<em>**Concluir**</em>":
 
 
 ![image](https://github.com/user-attachments/assets/2ee2fab2-0974-4850-8984-11ef0e48242e)
@@ -70,7 +70,7 @@ Posteriormente, clicará em "<em>**AGENDAR VISITA**</em>":
   - Informações do dia e horário;
 
  
-3. Preenchidas as informações, o agendamento será criado e automaticamente possuirá o status de "<em>**AGUARDANDO VALIDAÇÃO**</em>".
+3. Preenchidas as informações, o agendamento será criado e automaticamente possuirá o status de "<em>**Em busca**</em>".
 
 ![image](https://github.com/user-attachments/assets/ace8a1aa-4d7a-4bd2-865e-2fa1c74fae5d)
 
@@ -108,6 +108,7 @@ Por fim, tanto o **PRESTADOR DE SERVIÇOS**, quanto o CLIENTE poderão alterar o
 - HTML
 - CSS
 - Java Script
+- Node JS
 - MySQL
 ## Instruções de instalação
 - Abra o terminal
