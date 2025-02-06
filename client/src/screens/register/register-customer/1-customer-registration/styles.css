@@ -66,7 +66,7 @@ main form .separator__form {
     gap: 20px;
 }
 
-form input#full__name,
+/* form input#full__name,
 form input#cep, 
 form input#neighborhood, 
 form input#address,
@@ -76,9 +76,9 @@ form input#email,
 form input#password,
 form input#name {
     width: 320px;
-}
+} */
 
-form input#birthday {
+/* form input#birthday {
     width: 140px;
     text-indent: 0 !important;
 }
@@ -86,7 +86,7 @@ form input#birthday {
 form input#state {
     width: 100px;
     text-indent: 10px !important;
-}
+} */
 
 button.next__button {
     height: 50px;
