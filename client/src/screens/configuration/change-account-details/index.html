@@ -6,52 +6,38 @@
     <title>Atualizar Perfil</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./../../../styles/reset.css">
+    <link rel="stylesheet" href="./../../../styles/util.css">
+    
+
 </head>
 
 <body>
     <header>
         <div id="widgets">
             <a href="../index.html">
-                Voltar para a tela anterior
+                <img src="../../../assets/img/Left.png" alt="Seta apontando para a esquerda" id="left">
             </a>
         </div>
+        <img src="../../../assets/img/logo.png" alt="">
     </header>
 
     <main>
         <h1>Atualizar Perfil</h1>
         <form id="update-profile-form">
-            <label for="email">Novo Email:</label>
-            <input type="email" id="email" name="newEmail">
-
-            <label for="password">Nova Senha:</label>
-            <input type="password" id="password" name="newPassword">
-
-            <label for="name">Nome:</label>
-            <input type="text" id="name" name="newName">
-
-            <label for="phone">Telefone:</label>
-            <input type="text" id="phone" name="newPhone">
-
-            <label for="cep">CEP:</label>
-            <input type="text" id="cep" name="newCep">
-
-            <label for="state">Estado:</label>
-            <input type="text" id="state" name="newState">
-
-            <label for="city">Cidade:</label>
-            <input type="text" id="city" name="newCity">
-
-            <label for="neighborhood">Bairro:</label>
-            <input type="text" id="neighborhood" name="newNeighborhood">
-
-            <label for="street_address">Endereço:</label>
-            <input type="text" id="street_address" name="newStreetAddress">
-
-            <label for="complement">Complemento:</label>
-            <input type="text" id="complement" name="newComplement">
-
-            <label for="avatar_path">URL do Avatar:</label>
-            <input type="text" id="avatar_path" name="newAvatarPath">
+            <input type="email" id="email" name="newEmail" placeholder="Email">
+            <input type="password" id="password" name="newPassword" placeholder="Password">
+            <input type="text" id="name" name="newName" placeholder="Full name">
+            <input type="text" id="phone" name="newPhone" placeholder="Cellphone">
+            <input type="text" id="cep" name="newCep" placeholder="CEP">
+            <div class="separator__form">
+                <input type="text" id="state" name="newState" placeholder="State">
+                <input type="text" id="city" name="newCity" placeholder="City">
+            </div>
+            <input type="text" id="neighborhood" name="newNeighborhood" placeholder="Neighborhood">
+            <input type="text" id="street_address" name="newStreetAddress" placeholder="Street address">
+            <input type="text" id="complement" name="newComplement" placeholder="Complement">
+            <input type="text" id="avatar_path" name="newAvatarPath" placeholder="Avatar path">
 
             <!-- seção de categorias para prestadores de serviço -->
             <div id="categories-section" style="display: none;">
@@ -81,7 +67,7 @@
                 </div>
             </div>
 
-            <button type="submit">Atualizar</button>
+            <button type="submit" id="atualizar">Atualizar</button>
         </form>
     </main>
 
