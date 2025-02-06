@@ -76,14 +76,14 @@ input[type='password'] {
 }
 
 input#email {
-    background-image: url('../../../assets/img/customer.png');
+    background-image: url('../../assets/img/customer.png');
     background-repeat: no-repeat;
     background-position: 10px;
 }
 
 
 input[type='password'] {
-    background-image: url('../../../assets/img/lock.png');
+    background-image: url('../../assets/img/lock.png');
     background-repeat: no-repeat;
     background-position: 10px;
 }
@@ -99,7 +99,6 @@ input[type='submit'] {
     color: var(--white);
     margin-top: 45px;
     transition: all .2s;
-
 }
 
 input[type='submit'] {
@@ -125,7 +124,6 @@ p {
 }
 
 
-
 @media (min-width: 666px) {
     body {
         display: flex;
@@ -146,7 +144,7 @@ p {
 
 
 @media (min-width: 1000px) {
-    
+
 
     form {
         width: 75%;
@@ -156,7 +154,7 @@ p {
 
 
 @media (min-width: 1190px) {
-    
+
 
     form {
         width: 65%;
@@ -165,7 +163,7 @@ p {
 }
 
 @media (min-width: 1335px) {
-    
+
 
     form {
         width: 55%;

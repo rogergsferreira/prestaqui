@@ -1,46 +1,90 @@
 document.addEventListener('DOMContentLoaded', () => {
+
     function loadUserInfo() {
-        fetch('/api/user/')
-            .then(response => response.json())
-            .then(user => {
-                if (user) {
-                    document.getElementById('user__name').textContent = user.userName;
-                    document.getElementById('user__profile').src = user.userAvatarPath || 'https://robohash.org/default';
+        const userType = localStorage.getItem('userType');
+        const userId = localStorage.getItem('userId');
+        const email = localStorage.getItem('email');
+
+        if (userId && userType) {
+            // Ajuste o URL abaixo de acordo com a porta onde seu backend está rodando
+            fetch(`http://localhost:3000/api/user/get-user/${userId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Erro HTTP! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(user => {
+                    document.getElementById('user__name').textContent = user.name;
+                    document.getElementById('user__profile').src = user.avatar_path || 'https://robohash.org/default';
 
                     // Carregar os agendamentos do cliente logado
-                    loadScheduling(user.id);
-                } else {
-                    window.location.href = '/login.html';
-                }
-            })
-            .catch(error => console.error('Erro ao carregar as informações do usuário:', error));
+                    loadScheduling(userId);
+                })
+                .catch(error => console.error('Erro ao carregar as informações do usuário:', error));
+        } else {
+            // Se não houver informações no localStorage, redireciona para a página de login
+            window.location.href = '../../../../../public/index.html';
+        }
     }
 
     function loadScheduling(userId) {
-        fetch(`/api/services/get-services/${userId}`)
-            .then(response => response.json())
+        // Ajuste o URL abaixo de acordo com a porta onde seu backend está rodando
+        fetch(`http://localhost:3000/api/services/get-services/${userId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 const schedulingContainer = document.querySelector('.scheduling__container');
                 schedulingContainer.innerHTML = '';
 
                 data.forEach(scheduling => {
                     const schedulingCard = document.createElement('div');
-                    schedulingCard.classList.add('scheduling', 'card__pendente');
+                    schedulingCard.classList.add('scheduling');
+
+                    // Definir a cor de fundo do card com base no status
+                    let cardColor = '';
+                    switch (scheduling.status) {
+                        case 'Em busca':
+                            cardColor = 'orange';
+                            schedulingCard.classList.add('card__embusca');
+                            break;
+                        case 'Agendado':
+                            cardColor = 'blue';
+                            schedulingCard.classList.add('card__agendado');
+                            break;
+                        case 'Em andamento':
+                            cardColor = 'gray';
+                            schedulingCard.classList.add('card__emandamento');
+                            break;
+                        default:
+                            cardColor = 'white';
+                    }
+
+                    schedulingCard.style.backgroundColor = cardColor;
+
+                    // Montar o conteúdo do card
                     schedulingCard.innerHTML = `
                         <h3>#${scheduling.id} - ${scheduling.title}</h3>
                         <div class="service__provider__info">
                             <h4>Prestador: </h4>
-                            <div>${scheduling.provider_name}</div>
-                            <img src="../../../assets/img/whatsapp-logo.png" alt="Whatsapp">
+                            <div>${scheduling.provider_name || 'Aguardando prestador'}</div>
+                            ${scheduling.provider_phone ? `<a href="https://wa.me/${scheduling.provider_phone}" target="_blank">
+                                <img src="../../../assets/img/whatsapp-logo.png" alt="Whatsapp">
+                            </a>` : ''}
                         </div>
-                        <h4>Descrição: <span>${scheduling.description}</span></h4>
+                        <h4>Descrição: <span>${scheduling.service_description}</span></h4>
                         <h4>Status: </h4>
-                        <span class="pendente">${scheduling.status}</span>
+                        <span class="${scheduling.status.toLowerCase()}">${scheduling.status}</span>
                         <h4>Categoria:</h4>
                         <div class="category">
-                            <div class="${scheduling.provider_category.toLowerCase()}">${scheduling.provider_category.toUpperCase()}</div>
+                            <div class="${scheduling.category_name ? scheduling.category_name.toLowerCase() : ''}">${scheduling.category_name ? scheduling.category_name.toUpperCase() : ''}</div>
                         </div>
-                        <button class="scheduling__cancel" onclick="cancelScheduling(${scheduling.id})">CANCELAR VISITA</button>
+                        ${['Em busca', 'Agendado'].includes(scheduling.status) ? `<button class="scheduling__cancel" onclick="cancelScheduling(${scheduling.id})">CANCELAR SERVIÇO</button>` : ''}
+                        ${scheduling.status === 'Em andamento' ? `<button class="scheduling__complete" onclick="completeScheduling(${scheduling.id})">CONCLUIR SERVIÇO</button>` : ''}
                     `;
                     schedulingContainer.appendChild(schedulingCard);
                 });
@@ -49,24 +93,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function cancelScheduling(schedulingId) {
-        fetch(`/api/services/delete-service/${schedulingId}`, {
-            method: 'DELETE'
+        // Ajuste o URL abaixo de acordo com a porta onde seu backend está rodando
+        fetch(`http://localhost:3000/api/services/cancel-service/${schedulingId}`, {
+            method: 'PUT'
         })
             .then(response => response.ok ? alert('Agendamento cancelado com sucesso!') : alert('Erro ao cancelar agendamento'))
             .catch(error => console.error('Erro ao cancelar agendamento:', error))
-            .finally(loadUserInfo);
+            .finally(() => loadScheduling(localStorage.getItem('userId')));
+    }
+
+    function completeScheduling(schedulingId) {
+        // Ajuste o URL abaixo de acordo com a porta onde seu backend está rodando
+        fetch(`http://localhost:3000/api/services/complete-service/${schedulingId}`, {
+            method: 'PUT'
+        })
+            .then(response => response.ok ? alert('Serviço marcado como concluído!') : alert('Erro ao concluir serviço'))
+            .catch(error => console.error('Erro ao concluir serviço:', error))
+            .finally(() => loadScheduling(localStorage.getItem('userId')));
     }
 
     function goToNewSchedulingPage() {
-        window.location.href = '/new-scheduling.html';
+        window.location.href = '../4-new-scheduling/index.html';
     }
 
-    loadUserInfo();
     document.querySelector('.new__scheduling').onclick = goToNewSchedulingPage;
+
+    loadUserInfo();
+
 });
 
-
-// Javascript to handle the filter
+// JavaScript para manipular o filtro de status
 
 document.addEventListener("DOMContentLoaded", function () {
     const dropdown = document.querySelector(".dropdown");
@@ -74,68 +130,80 @@ document.addEventListener("DOMContentLoaded", function () {
     const menu = document.querySelector(".dropdown-menu");
     const radios = document.querySelectorAll(".dropdown-menu input[type='radio']");
 
-    // Open and close the menu when you select an option
+    // Abrir e fechar o menu ao clicar no botão
     button.addEventListener("click", function () {
         let expanded = button.getAttribute("aria-expanded") === "true";
         button.setAttribute("aria-expanded", !expanded);
         dropdown.classList.toggle("open");
     });
 
-    // Close the menu when you select an option
+    // Fechar o menu ao selecionar uma opção
     radios.forEach(radio => {
         radio.addEventListener("change", function () {
             setTimeout(() => {
                 button.textContent = document.querySelector(`label[for="${this.id}"]`).textContent;
                 dropdown.classList.remove("open");
                 button.setAttribute("aria-expanded", "false");
-            }, 150); 
+
+                // Filtrar os agendamentos com base no status selecionado
+                filterScheduling(this.value);
+            }, 150);
         });
     });
 
-    // Close the dropdown when you click outside
+    // Fechar o dropdown ao clicar fora dele
     document.addEventListener("click", function (event) {
-        if (!dropdown.contains(event.target)) {
+        if (!dropdown.contains(event.target) && dropdown.classList.contains('open')) {
             dropdown.classList.remove("open");
             button.setAttribute("aria-expanded", "false");
         }
     });
 });
 
+// Função para filtrar os agendamentos com base no status
+function filterScheduling(status) {
+    const schedulingCards = document.querySelectorAll('.scheduling__container .scheduling');
 
+    schedulingCards.forEach(card => {
+        const cardStatus = card.querySelector('span').textContent.trim();
 
+        if (status === 'todos' || cardStatus.toLowerCase() === status.toLowerCase()) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
 
+// JavaScript para o menu hambúrguer
 
+const hamburguerMenu = document.getElementById('hamburguer-menu');
 
-// Hamburguer menu javascript
+const navItems = document.getElementById('nav-items');
+const main = document.querySelector('main');
 
-const hamburguerMenu = document.getElementById('hamburguer-menu'); 
+const navItem = document.querySelectorAll('.nav-item');
 
-const navItems = document.getElementById('nav-items')
-const main = document.querySelector('main'); 
-
-const navItem = document.querySelectorAll('.nav-item'); 
-
-const closeButton = document.getElementById('close__button')
+const closeButton = document.getElementById('close__button');
 
 hamburguerMenu.addEventListener('click', () => {
-
-    navItems.classList.toggle('active'); 
-    hamburguerMenu.classList.toggle('active'); 
+    navItems.classList.toggle('active');
+    hamburguerMenu.classList.toggle('active');
     main.classList.toggle('active');
-})
+});
 
 navItem.forEach(item => item.addEventListener('click', () => {
-    const navItemsIsActive = navItems.classList.contains('active'); 
+    const navItemsIsActive = navItems.classList.contains('active');
 
     if (navItemsIsActive) {
-        navItems.classList.remove('active'); 
+        navItems.classList.remove('active');
         hamburguerMenu.classList.remove('active');
         main.classList.remove('active');
     }
-})); 
+}));
 
 closeButton.addEventListener('click', () => {
-    navItems.classList.remove('active'); 
-        hamburguerMenu.classList.remove('active');
-        main.classList.remove('active');
-})
+    navItems.classList.remove('active');
+    hamburguerMenu.classList.remove('active');
+    main.classList.remove('active');
+});

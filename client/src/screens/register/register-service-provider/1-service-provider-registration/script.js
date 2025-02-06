@@ -27,10 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const state = document.getElementById('state').value;
         const city = document.getElementById('city').value;
         const neighborhood = document.getElementById('neighborhood').value;
-        const street_address = document.getElementById('address').value;
+        const streetAddress = document.getElementById('address').value;
         const complement = document.getElementById('additional__info').value;
 
-        if (email && password && name && phone && cep && state && city && neighborhood && street_address) {
+        if (email && password && name && phone && cep && state && city && neighborhood && streetAddress) {
             const newServiceProviderData = {
                 email,
                 password,
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 state,
                 city,
                 neighborhood,
-                street_address,
+                streetAddress,
                 complement,
                 userType: 'service_provider'
             };
