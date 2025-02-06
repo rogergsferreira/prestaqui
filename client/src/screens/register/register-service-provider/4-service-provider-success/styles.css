@@ -69,3 +69,34 @@ button.next__button {
     font-size: .9em;
     transform: translateY(40px);
 }
+
+
+@media(min-width: 620px) {
+    button.next__button{
+        margin-left: 25%;
+    }
+}
+
+@media(min-width: 752px) {
+    main {
+        width: 50%;
+        background-color: rebeccapurple;
+    }
+
+    body{
+        display: flex;
+        flex-direction: column;
+        align-items: center
+    };
+
+    button.next__button {
+        margin-left: 0;
+    }
+
+
+    main #check__mark {
+        margin-left: 40%;
+    }
+
+
+}
