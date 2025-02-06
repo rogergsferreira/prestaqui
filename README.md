@@ -1,11 +1,10 @@
 # Projeto Integrador - PrestAqui
 
 PrestAqui é uma aplicação web, focada para usuários mobile, com a função de conectar prestadores de serviço com clientes que estão precisando de ajuda e suporte.
+<br>
+Desse modo, permite a comunicação entre cliente e prestador e o gerenciamento mais eficiente desses serviços.
 
-Ela permiti a comunicação e o gerenciamento mais eficiente desses serviços.
-
-## Figma <img src="https://github.com/user-attachments/assets/1e2f00fd-6950-4939-bab2-a648992177d1" alt="image" style="width: 24px; height: auto;">
-
+## Design do projeto <img src="https://github.com/user-attachments/assets/1e2f00fd-6950-4939-bab2-a648992177d1" alt="image" style="width: 24px; height: auto;">
 <details>
   <summary> Link para a aplicação 🔗</summary>
   <br>
