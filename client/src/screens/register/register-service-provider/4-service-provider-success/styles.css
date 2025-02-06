@@ -80,7 +80,6 @@ button.next__button {
 @media(min-width: 752px) {
     main {
         width: 50%;
-        background-color: rebeccapurple;
     }
 
     body{
