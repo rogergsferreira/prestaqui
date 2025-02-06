@@ -82,3 +82,79 @@ button.next__button {
 
     transform: translateY(-20px);
 }
+
+
+
+
+
+
+@media (min-width:500px) {
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center !important;
+        /* background-color: red !important; */
+    }
+
+    main {
+        width: 80%;
+    }
+
+    form {
+        /* margin: 0 auto !important; */
+    }
+}
+
+
+@media (min-width:643px) {
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* background-color: red; */
+    }
+
+    main {
+        /* background-color: green */
+    }
+
+    form {
+        margin-left: 15%;
+    }
+}
+
+
+
+
+
+@media (min-width: 750px) {
+    button.next__button {
+        margin-left:25%;
+    }
+
+    main #profile__image {
+        height: 100px;
+        width: 100px;
+        margin-left: 40%;
+    }
+}
+
+@media (min-width: 1000px) {
+    button.next__button {
+        margin-left:38%;
+    }
+
+    main #reload {
+        width: 40px;
+        margin-left: 47%;
+    }
+
+    main #profile__image {
+        height: 100px;
+        width: 100px;
+        margin-left: 45%;
+    }
+}
+
+
+
