@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const email = localStorage.getItem('email');
 
         if (userId && userType) {
-            // Ajuste o URL abaixo de acordo com a porta onde seu backend está rodando
             fetch(`http://localhost:3000/api/user/get-user/${userId}`)
                 .then(response => {
                     if (!response.ok) {
@@ -18,18 +17,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('user__name').textContent = user.name;
                     document.getElementById('user__profile').src = user.avatar_path || 'https://robohash.org/default';
 
-                    // Carregar os agendamentos do cliente logado
                     loadScheduling(userId);
                 })
                 .catch(error => console.error('Erro ao carregar as informações do usuário:', error));
         } else {
-            // Se não houver informações no localStorage, redireciona para a página de login
             window.location.href = '../../../../../public/index.html';
         }
     }
 
     function loadScheduling(userId) {
-        // Ajuste o URL abaixo de acordo com a porta onde seu backend está rodando
         fetch(`http://localhost:3000/api/services/get-services/${userId}`)
             .then(response => {
                 if (!response.ok) {
@@ -83,27 +79,60 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="category">
                             <div class="${scheduling.category_name ? scheduling.category_name.toLowerCase() : ''}">${scheduling.category_name ? scheduling.category_name.toUpperCase() : ''}</div>
                         </div>
-                        ${['Em busca', 'Agendado'].includes(scheduling.status) ? `<button class="scheduling__cancel" onclick="cancelScheduling(${scheduling.id})">CANCELAR SERVIÇO</button>` : ''}
+                        ${['Em busca', 'Agendado'].includes(scheduling.status) ? `<button class="scheduling__cancel" data-id="${scheduling.id}" data-status="${scheduling.status}">CANCELAR SERVIÇO</button>` : ''}
                         ${scheduling.status === 'Em andamento' ? `<button class="scheduling__complete" onclick="completeScheduling(${scheduling.id})">CONCLUIR SERVIÇO</button>` : ''}
                     `;
+
+                    // Adicionar o card ao container
                     schedulingContainer.appendChild(schedulingCard);
+
+                    // Adicionar event listener ao botão de cancelar, se existir
+                    const cancelButton = schedulingCard.querySelector('.scheduling__cancel');
+                    if (cancelButton) {
+                        cancelButton.addEventListener('click', () => {
+                            const schedulingId = cancelButton.getAttribute('data-id');
+                            const status = cancelButton.getAttribute('data-status');
+
+                            // Verificar se o status permite o cancelamento
+                            if (['Agendado', 'Em busca'].includes(status)) {
+                                if (confirm('Tem certeza que deseja cancelar este serviço?')) {
+                                    cancelScheduling(schedulingId);
+                                }
+                            } else {
+                                alert('Este serviço não pode ser cancelado no status atual.');
+                            }
+                        });
+                    }
                 });
             })
             .catch(error => console.error('Erro ao carregar os agendamentos:', error));
     }
 
+    // script.js
+
     function cancelScheduling(schedulingId) {
-        // Ajuste o URL abaixo de acordo com a porta onde seu backend está rodando
         fetch(`http://localhost:3000/api/services/cancel-service/${schedulingId}`, {
             method: 'PUT'
         })
-            .then(response => response.ok ? alert('Agendamento cancelado com sucesso!') : alert('Erro ao cancelar agendamento'))
-            .catch(error => console.error('Erro ao cancelar agendamento:', error))
-            .finally(() => loadScheduling(localStorage.getItem('userId')));
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Agendamento cancelado com sucesso!');
+                    loadScheduling(localStorage.getItem('userId'));
+                } else {
+                    alert('Erro ao cancelar agendamento: ' + (data.message || 'Erro desconhecido.'));
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao cancelar agendamento:', error);
+                alert('Ocorreu um erro ao cancelar o agendamento.');
+            });
     }
 
+
+
+
     function completeScheduling(schedulingId) {
-        // Ajuste o URL abaixo de acordo com a porta onde seu backend está rodando
         fetch(`http://localhost:3000/api/services/complete-service/${schedulingId}`, {
             method: 'PUT'
         })
