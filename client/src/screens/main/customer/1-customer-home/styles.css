@@ -164,6 +164,12 @@ h3 {
     align-items: center;
 }
 
+.scheduling .info {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
 #whatsapp-logo {
     height: 20px;
 }
@@ -330,13 +336,13 @@ h3 {
 /* Status para os cards */
 
 .card__embusca {
-    background-color: orange;
+    background-color: #F2A541;
 }
 
 .card__agendado {
-    background-color: blue;
+    background-color: #2F6BD3;
 }
 
 .card__emandamento {
-    background-color: gray;
+    background-color: #6D7275;
 }

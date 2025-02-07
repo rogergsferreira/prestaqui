@@ -1,10 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Função para normalizar textos
-    function normalizeText(text) {
-        return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
-    }
-
     function filterScheduling(status) {
         const schedulingCards = document.querySelectorAll('.scheduling__container .scheduling');
 
@@ -121,15 +116,15 @@ document.addEventListener('DOMContentLoaded', () => {
             let cardColor = '';
             switch (scheduling.status) {
                 case 'Em busca':
-                    cardColor = 'orange';
+                    cardColor = '#F2A541';
                     schedulingCard.classList.add('card__embusca');
                     break;
                 case 'Agendado':
-                    cardColor = 'blue';
+                    cardColor = '#2F6BD3';
                     schedulingCard.classList.add('card__agendado');
                     break;
                 case 'Em andamento':
-                    cardColor = 'gray';
+                    cardColor = '#6D7275';
                     schedulingCard.classList.add('card__emandamento');
                     break;
                 default:
@@ -137,6 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             schedulingCard.style.backgroundColor = cardColor;
+            schedulingCard.style.marginBottom = "20px";
 
             const formattedDate = formatDateToBrazilian(scheduling.service_date);
 
@@ -149,25 +145,35 @@ document.addEventListener('DOMContentLoaded', () => {
                         <img src="../../../assets/img/whatsapp-logo.png" alt="Whatsapp">
                     </a>` : ''}
                 </div>
-                <h4>Descrição:</h4> <span>${scheduling.service_description}</span>
+                <div class="info">
                 <h4>Data:</h4> <span>${formattedDate}</span>
+                </div>
+                <div class="info">
                 <h4>Período:</h4> <span>${scheduling.day_shift}</span>
-                <h4>Status:</h4>
-                <span class="status ${scheduling.status.toLowerCase()}">${scheduling.status}</span>
+                </div>
+                <div class="info">
                 <h4>Categoria:</h4>
                 <div class="category">
                     <div class="${scheduling.category_name ? scheduling.category_name.toLowerCase() : ''}">
                         ${scheduling.category_name ? scheduling.category_name.toUpperCase() : ''}
                     </div>
                 </div>
+                </div>
+                <div class="info">
+                <h4>Status:</h4>
+                <span class="status ${scheduling.status.toLowerCase()}">${scheduling.status}</span>
+                </div>
+                <div class="info">
+                <h4>Descrição:</h4> <span>${scheduling.service_description}</span>
+                </div>
                 ${['Em busca', 'Agendado'].includes(scheduling.status) ? `
                     <button class="scheduling__cancel" data-id="${scheduling.id}" data-status="${scheduling.status}">
-                        CANCELAR SERVIÇO
+                        Cancelar
                     </button>
                 ` : ''}
                 ${scheduling.status === 'Em andamento' ? `
                     <button class="scheduling__complete" onclick="completeScheduling(${scheduling.id})">
-                        CONCLUIR SERVIÇO
+                        Concluir
                     </button>
                 ` : ''}
             `;
@@ -319,37 +325,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadUserInfo();
 
-});
+    // JavaScript para o menu hambúrguer
 
-// JavaScript para o menu hambúrguer
+    const hamburguerMenu = document.getElementById('hamburguer-menu');
+    const navItems = document.getElementById('nav-items');
+    const main = document.querySelector('main');
+    const navItem = document.querySelectorAll('.nav-item');
+    const closeButton = document.getElementById('close__button');
 
-const hamburguerMenu = document.getElementById('hamburguer-menu');
+    hamburguerMenu.addEventListener('click', () => {
+        navItems.classList.toggle('active');
+        hamburguerMenu.classList.toggle('active');
+        main.classList.toggle('active');
+    });
 
-const navItems = document.getElementById('nav-items');
-const main = document.querySelector('main');
+    navItem.forEach(item => item.addEventListener('click', () => {
+        const navItemsIsActive = navItems.classList.contains('active');
 
-const navItem = document.querySelectorAll('.nav-item');
+        if (navItemsIsActive) {
+            navItems.classList.remove('active');
+            hamburguerMenu.classList.remove('active');
+            main.classList.remove('active');
+        }
+    }));
 
-const closeButton = document.getElementById('close__button');
-
-hamburguerMenu.addEventListener('click', () => {
-    navItems.classList.toggle('active');
-    hamburguerMenu.classList.toggle('active');
-    main.classList.toggle('active');
-});
-
-navItem.forEach(item => item.addEventListener('click', () => {
-    const navItemsIsActive = navItems.classList.contains('active');
-
-    if (navItemsIsActive) {
+    closeButton.addEventListener('click', () => {
         navItems.classList.remove('active');
         hamburguerMenu.classList.remove('active');
         main.classList.remove('active');
-    }
-}));
+    });
 
-closeButton.addEventListener('click', () => {
-    navItems.classList.remove('active');
-    hamburguerMenu.classList.remove('active');
-    main.classList.remove('active');
+    const logoutButton = document.querySelector('.logoff');
+    logoutButton.addEventListener('click', async () => {
+        localStorage.clear();
+        window.location.href = './../../../../../public/index.html';
+    });
 });

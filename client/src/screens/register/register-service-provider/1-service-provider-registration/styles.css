@@ -38,7 +38,7 @@ main {
 }
 
 form {
-    width:50%;
+    width: 50%;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -47,12 +47,12 @@ form {
 }
 
 
-input{
+input {
     height: 40px;
     border-radius: 5px;
     border: 0;
     font-size: .9em;
-    background: var(--input-type-text-color); 
+    background: var(--input-type-text-color);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
     color: #153973;
@@ -67,8 +67,8 @@ main form .separator__form {
 }
 
 form input#full__name,
-form input#cep, 
-form input#neighborhood, 
+form input#cep,
+form input#neighborhood,
 form input#address,
 form input#additional__info,
 form input#cellphone,
@@ -119,10 +119,6 @@ button.next__button {
     main {
         width: 80%;
     }
-
-    form {
-        /* margin: 0 auto !important; */
-    }
 }
 
 
@@ -132,10 +128,6 @@ button.next__button {
         flex-direction: column;
         align-items: center;
         /* background-color: red; */
-    }
-
-    main {
-        /* background-color: green */
     }
 
     form {
@@ -152,16 +144,12 @@ button.next__button {
         /* background-color: red; */
     }
 
-    main {
-        /* background-color: green */
-    }
-
     form {
         margin-left: 25%;
     }
 
     button.next__button {
-        margin-left:30%;
+        margin-left: 30%;
     }
 }
 
@@ -175,11 +163,8 @@ button.next__button {
         /* background-color: red; */
     }
 
-    main {
-        /* background-color: green */
-    }
-
-    form,.next__button {
+    form,
+    .next__button {
         margin-left: 25%;
         width: 100%;
     }
@@ -193,10 +178,6 @@ button.next__button {
         flex-direction: column;
         align-items: center;
         /* background-color: red; */
-    }
-
-    main {
-        /* background-color: green; */
     }
 
     form {
@@ -220,10 +201,6 @@ button.next__button {
         /* background-color: red; */
     }
 
-    main {
-        /* background-color: green; */
-    }
-
     form {
         margin-left: 35%;
         width: 100%;
@@ -236,15 +213,15 @@ button.next__button {
 
 
     form input#full__name,
-    form input#cep, 
-    form input#neighborhood, 
+    form input#cep,
+    form input#neighborhood,
     form input#address,
     form input#additional__info,
     form input#cellphone,
     form input#email,
     form input#password,
     form input#name {
-    width: 360px;
+        width: 360px;
     }
 
 
@@ -252,14 +229,9 @@ button.next__button {
         width: 140px;
         text-indent: 0 !important;
     }
-    
+
     form input#state {
         width: 140px;
         text-indent: 10px !important;
     }
 }
-    
-
-
-
-

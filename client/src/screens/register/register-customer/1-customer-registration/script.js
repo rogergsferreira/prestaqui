@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('state').value = customerData.state || '';
         document.getElementById('city').value = customerData.city || '';
         document.getElementById('neighborhood').value = customerData.neighborhood || '';
-        document.getElementById('streetAddress').value = customerData.streetAddress || '';
+        document.getElementById('street_address').value = customerData.street_address || '';
         document.getElementById('additional__info').value = customerData.complement || '';
     }
 
@@ -27,10 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const state = document.getElementById('state').value;
         const city = document.getElementById('city').value;
         const neighborhood = document.getElementById('neighborhood').value;
-        const streetAddress = document.getElementById('streetAddress').value;
+        const street_address = document.getElementById('street_address').value;
         const complement = document.getElementById('additional__info').value;
 
-        if (email && password && name && phone && cep && state && city && neighborhood && streetAddress) {
+        if (email && password && name && phone && cep && state && city && neighborhood && street_address) {
             const newCustomerData = {
                 email,
                 password,
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 state,
                 city,
                 neighborhood,
-                streetAddress,
+                street_address,
                 complement
             };
 

@@ -11,21 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const checkUserTypeAndSession = async () => {
         try {
 
-            // const response = await fetch('http://localhost:3000/api/auth/get-session');
-            // if (response.status === 401) {
-            //     console.error('No active session');
-            //     return;
-            // }
-            // const data = await response.json();
-
-            // if (!data.user) {
-            //     console.error('Nenhum usuário logado');
-            //     return;
-            // }
-
-            // userId = data.user.id;
-            // userType = data.user.userType;
-
             email = localStorage.getItem('email');
             userId = localStorage.getItem('userId');
             userType = localStorage.getItem('userType');
@@ -35,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.location.href = './../../../public/index.html';
             }
 
-            alert("" + email + userId + userType);
+            alert("Dados do usuário atual:\n\nEmail: " + email + ". \nId do usuário logado: " + userId + ".\nTipo de perfil logado: " + userType + ".");
 
             const profileTypeResponse = await fetch(`http://localhost:3000/api/user/get-profile-type/${userId}`);
             const profileType = await profileTypeResponse.text();
@@ -97,17 +82,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     logoutButton.addEventListener('click', async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/auth/logout', {
-                method: 'POST',
-                credentials: 'same-origin',
-            });
+            // const response = await fetch('http://localhost:3000/api/auth/logout', {
+            //     method: 'POST',
+            //     credentials: 'same-origin',
+            // });
 
-            if (response.ok) {
-                localStorage.clear();
-                window.location.href = './../../../public/index.html';
-            } else {
-                console.error('Erro ao encerrar sessão');
-            }
+            // if (response.ok) {
+            localStorage.clear();
+            window.location.href = './../../../public/index.html';
+            // } else {
+            //     console.error('Erro ao encerrar sessão');
+            // }
         } catch (error) {
             console.error('Erro ao encerrar sessão:', error);
         }
