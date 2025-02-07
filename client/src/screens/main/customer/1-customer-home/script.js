@@ -140,7 +140,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const formattedDate = formatDateToBrazilian(scheduling.service_date);
 
-            // Montar o conteúdo do card (igual ao seu código atual)
             schedulingCard.innerHTML = `
                 <h3>#${scheduling.id} - ${scheduling.title}</h3>
                 <div class="service__provider__info">
