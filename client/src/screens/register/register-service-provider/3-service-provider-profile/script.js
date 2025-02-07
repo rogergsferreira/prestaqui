@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            serviceProviderData.avatar_path = imagePath;
+            serviceProviderData.avatarPath = imagePath;
 
             console.log('Dados do prestador de serviço (Terceira Tela):', serviceProviderData);
 

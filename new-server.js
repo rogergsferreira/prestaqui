@@ -200,7 +200,7 @@ async function login(req, res) {
                 req.session.user = { id: userId, email: email, userType };
                 req.session.save((err) => {
                     if (err) return res.status(500).send('Failed to save session');
-                    res.status(200).json({ message: ('Logged in successfully!') });
+                    res.status(200).json(req.session.user);
                 });
             });
         });
@@ -658,40 +658,146 @@ async function getServicesByCustomerId(req, res) {
         return res.status(400).send('Customer ID is required');
     }
 
-    db.query('SELECT * FROM services WHERE customer_id = ?', [customer_id], (err, result) => {
-        if (err) {
-            console.error('Database error:', err);
-            return res.status(500).send('Database error');
-        }
+    const query = `
+        SELECT s.*, c.category_name, sp.user_id AS provider_user_id, u.name AS provider_name, u.phone AS provider_phone
+        FROM solicitation s
+        LEFT JOIN category c ON s.category_id = c.id
+        LEFT JOIN service_provider sp ON s.service_provider_id = sp.id
+        LEFT JOIN user u ON sp.user_id = u.id
+        WHERE s.customer_id = ?
+    `;
 
-        if (result.length === 0) {
-            return res.status(404).send('No services found for this customer');
+    db.query(query, [customer_id], (err, result) => {
+        if (err) {
+            console.error('Erro do banco de dados:', err);
+            return res.status(500).send('Erro no servidor');
         }
 
         res.json(result);
     });
 }
 
-async function deleteServiceById(req, res) {
+// async function deleteServiceById(req, res) {
+//     const { id } = req.params;
+
+//     if (!id) {
+//         return res.status(400).send('Service ID is required');
+//     }
+
+//     db.query('DELETE FROM services WHERE id = ?', [id], (err, result) => {
+//         if (err) {
+//             console.error('Database error:', err);
+//             return res.status(500).send('Database error');
+//         }
+
+//         if (result.affectedRows === 0) {
+//             return res.status(404).send('Service not found');
+//         }
+
+//         res.send('Service deleted successfully');
+//     });
+// }
+
+async function cancelServiceById(req, res) {
     const { id } = req.params;
 
-    if (!id) {
-        return res.status(400).send('Service ID is required');
-    }
-
-    db.query('DELETE FROM services WHERE id = ?', [id], (err, result) => {
+    db.query('UPDATE solicitation SET status = ? WHERE id = ?', ['Cancelado', id], (err, result) => {
         if (err) {
-            console.error('Database error:', err);
-            return res.status(500).send('Database error');
+            console.error('Erro do banco de dados:', err);
+            return res.status(500).send('Erro no servidor');
         }
 
-        if (result.affectedRows === 0) {
-            return res.status(404).send('Service not found');
-        }
-
-        res.send('Service deleted successfully');
+        res.send('Serviço cancelado com sucesso');
     });
 }
+
+async function completeServiceById(req, res) {
+    const { id } = req.params;
+
+    db.query('UPDATE solicitation SET status = ? WHERE id = ?', ['Concluído', id], (err, result) => {
+        if (err) {
+            console.error('Erro do banco de dados:', err);
+            return res.status(500).send('Erro no servidor');
+        }
+
+        res.send('Serviço concluído com sucesso');
+    });
+}
+
+async function submitSolicitation(req, res) {
+    const {
+        category,
+        state,
+        city,
+        service_title,
+        description,
+        date,
+        period,
+        customer_id
+    } = req.body;
+
+    // mapeamento dos nomes das categorias para seus Ids
+    const categoryMap = {
+        'Eletricista': 1,
+        'Pintor': 2,
+        'Faxineiro': 3,
+        'Chaveiro': 4,
+        'Pedreiro': 5,
+        'Fotógrafo': 6
+    };
+
+    const category_id = categoryMap[category];
+
+    if (!customer_id || !category_id || !date || !service_title || !description || !period) {
+        res.status(400).json({ success: false, message: 'Dados insuficientes para criar a solicitação.' });
+        return;
+    }
+
+    const checkCustomerQuery = 'SELECT id FROM customer WHERE user_id = ?';
+    db.query(checkCustomerQuery, [customer_id], (err, results) => {
+        if (err) {
+            console.error('Erro ao verificar o cliente:', err);
+            res.status(500).json({ success: false, message: 'Erro interno do servidor.' });
+        } else if (results.length === 0) {
+            res.status(400).json({ success: false, message: 'Cliente não encontrado.' });
+        } else {
+
+            const service_provider_id = null;
+            const appointment_status = false;
+            const status = 'Em busca';
+
+            const insertQuery = `
+                INSERT INTO solicitation (
+                    service_provider_id, customer_id, service_date, category_id,
+                    title, service_description, appointment_status, status, day_shift
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `;
+
+            db.query(
+                insertQuery,
+                [
+                    service_provider_id,
+                    results[0].id, // Id do cliente na tabela customer
+                    date,
+                    category_id,
+                    service_title,
+                    description,
+                    appointment_status,
+                    status,
+                    period
+                ],
+                (err, insertResults) => {
+                    if (err) {
+                        console.error('Erro ao inserir a solicitação:', err);
+                        res.status(500).json({ success: false, message: 'Erro ao inserir a solicitação.' });
+                    } else {
+                        res.json({ success: true, message: 'Solicitação inserida com sucesso!' });
+                    }
+                }
+            );
+        }
+    });
+};
 
 
 // Routers
@@ -706,7 +812,7 @@ authRouter.post('/logout', logout);
 authRouter.get('/get-session', getSession);
 
 // User routes (Protecteds)
-userRouter.use(authenticateSession);
+// userRouter.use(authenticateSession); precisa do session funcionando para isso funcionar
 userRouter.get('/get-users', getUsers);
 userRouter.get('/get-user/:id', getUserById);
 userRouter.put('/update-user/:id', updateUser);
@@ -716,10 +822,12 @@ userRouter.get('/get-profile-type/:userId', getProfileType);
 userRouter.post('/add-categories', addCategories);
 userRouter.get('/get-categories/:id', getUserCategories);
 
-// Serice routes (Protecteds)
-servicesRouter.use(authenticateSession);
+// Service routes (Protecteds)
+// servicesRouter.use(authenticateSession); precisa do session funcionando para isso funcionar
 servicesRouter.get('/get-services/:customer_id', getServicesByCustomerId);
-servicesRouter.delete('/delete-service/:id', deleteServiceById);
+servicesRouter.put('/cancel-service/:id', cancelServiceById);
+servicesRouter.put('/complete-service/:id', completeServiceById);
+servicesRouter.post('/submitSolicitation', submitSolicitation);
 
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);

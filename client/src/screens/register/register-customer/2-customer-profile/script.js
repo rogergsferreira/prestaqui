@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            customerData.avatar_path = imagePath;
+            customerData.avatarPath = imagePath;
             customerData.userType = 'customer';
 
             console.log('Dados do cliente (Segunda Tela):', customerData); // Adiciona um console.log

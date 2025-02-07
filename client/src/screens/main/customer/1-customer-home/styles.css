@@ -94,7 +94,6 @@ main .scheduling__actions #history {
     align-items: center;
     background-color: var(--button-second-color);
     background-color: transparent
-
 }
 
 main .scheduling__actions h2 {
@@ -116,7 +115,7 @@ main .scheduling__container {
     flex-direction: column;
     align-items: center;
     height: auto;
-    margin-top: 20px;    
+    margin-top: 20px;
 }
 
 
@@ -129,10 +128,10 @@ main .scheduling__container {
     gap: 13px;
 }
 
-.scheduling h3, 
-.scheduling h4{
+.scheduling h3,
+.scheduling h4 {
     font-family: 'Poppins', sans-serif;
-    color: var(--white); 
+    color: var(--white);
 }
 
 h3 {
@@ -146,9 +145,9 @@ h3 {
 }
 
 
-.scheduling #service__provider__name, 
-.scheduling #scheduling__time, 
-.scheduling #scheduling__status, 
+.scheduling #service__provider__name,
+.scheduling #scheduling__time,
+.scheduling #scheduling__status,
 .scheduling #scheduling__description {
     color: var(--button-color) !important;
     font-weight: 600;
@@ -204,9 +203,9 @@ h3 {
 .dropdown {
     position: relative;
     display: inline-block;
-  }
+}
 
-  .dropdown-btn {
+.dropdown-btn {
     height: 40px;
     border-radius: 10px;
     border: none;
@@ -218,9 +217,9 @@ h3 {
     margin-left: -18%;
     width: 120px;
     font-size: .9em;
-  } 
+}
 
-  .dropdown-menu {
+.dropdown-menu {
     display: none;
     position: absolute;
     background-color: white;
@@ -229,34 +228,34 @@ h3 {
     z-index: 1;
     width: 150px;
     left: -60px;
-  }
+}
 
-  .dropdown.open .dropdown-menu{
+.dropdown.open .dropdown-menu {
     display: block;
-  }
+}
 
 
-  .dropdown-menu label {
+.dropdown-menu label {
     display: block;
     cursor: pointer;
     padding: 5px 0;
-  }
+}
 
-  .dropdown.active .dropdown-menu {
+.dropdown.active .dropdown-menu {
     display: block;
-  }
+}
 
-  .next__button {
+.next__button {
     margin-left: 55px;
     transform: translateY(-50px);
-  }
+}
 
 
 
 
 
 
-  /*Hamburguer menu style*/
+/*Hamburguer menu style*/
 
 #hamburguer-menu {
     padding: 20px;
@@ -264,7 +263,7 @@ h3 {
     flex-direction: row-reverse;
 }
 
-.container__menu__hamburguer{
+.container__menu__hamburguer {
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -272,10 +271,10 @@ h3 {
 }
 
 
-.nav-items{
+.nav-items {
     z-index: 0;
     height: 360px;
-    gap: 20px; 
+    gap: 20px;
     width: 70%;
     z-index: 10;
     transform: translateX(160%);
@@ -305,25 +304,39 @@ h3 {
     font-size: .8em;
 }
 
-.nav-items.active{
+.nav-items.active {
     transform: translateX(0);
 }
 
-.nav-item{
-width: 100%;
- display: flex;
- align-items: center;
- justify-content: center;
-width: 135px;
-height: 30px;
-background: #3F5780;
-box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
-border-radius: 8px;
-color: white;
+.nav-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 135px;
+    height: 30px;
+    background: #3F5780;
+    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    color: white;
 
 }
 
 .logoff {
     background-color: #D9534F !important;
     margin-top: 20px;
+}
+
+/* Status para os cards */
+
+.card__embusca {
+    background-color: orange;
+}
+
+.card__agendado {
+    background-color: blue;
+}
+
+.card__emandamento {
+    background-color: gray;
 }

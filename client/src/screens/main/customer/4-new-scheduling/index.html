@@ -3,20 +3,49 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../../../../styles/status.css">
-    <link rel="stylesheet" href="../../../../styles/category.css">
-    <link rel="stylesheet" href="../../../../styles/reset.css">
-    <link rel="stylesheet" href="../../../../styles/util.css">
-    <!-- <link rel="stylesheet" href="../../../../styles/styles.css"> -->
-    <link rel="stylesheet" href="./styles.css">
+    <title>Solicitação de serviço</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Preencha os dados de agendamento</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    Preencha os dados de agendamento
+    <a href="../1-customer-home/index.html">
+        Voltar para a página principal
+    </a>
+    <h1>Preencha os dados da solicitação de serviço</h1>
+    <form action="#" method="post">
+        <h2>Categoria</h2>
+        <label><input type="radio" name="category" value="Eletricista"> Eletricista</label><br>
+        <label><input type="radio" name="category" value="Pintor"> Pintor</label><br>
+        <label><input type="radio" name="category" value="Faxineiro"> Faxineiro</label><br>
+        <label><input type="radio" name="category" value="Chaveiro"> Chaveiro</label><br>
+        <label><input type="radio" name="category" value="Pedreiro"> Pedreiro</label><br>
+        <label><input type="radio" name="category" value="Fotógrafo"> Fotógrafo</label><br><br>
 
-    <script src="script.js"></script>
+        <label for="state">Estado:</label><br>
+        <input type="text" id="state" name="state"><br><br>
+
+        <label for="city">Cidade:</label><br>
+        <input type="text" id="city" name="city"><br><br>
+
+        <label for="service_title">Título do Serviço:</label><br>
+        <input type="text" id="service_title" name="service_title"><br><br>
+
+        <label for="description">Descrição do Serviço:</label><br>
+        <textarea id="description" name="description"></textarea><br><br>
+
+        <label for="date">Data:</label>
+        <input type="date" id="date" name="date"><br><br>
+
+        <h2>Período</h2>
+        <label><input type="radio" name="period" value="Manhã"> Manhã</label><br>
+        <label><input type="radio" name="period" value="Tarde"> Tarde</label><br>
+        <label><input type="radio" name="period" value="Noite"> Noite</label><br><br>
+
+        <input type="submit" value="Enviar">
+    </form>
+
+    <script src="./script.js"></script>
 </body>
 
 </html>

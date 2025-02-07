@@ -4,34 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../../styles/reset.css">
-    <link rel="stylesheet" href="../../../styles/util.css">
+    <title>Tela de Login</title>
+    <link rel="stylesheet" href="../../styles/reset.css">
+    <link rel="stylesheet" href="../../styles/util.css">
     <link rel="stylesheet" href="./styles.css">
-    <title>Tela de login</title>
 </head>
 
 <body>
     <header>
         <div id="widgets">
-            <a href="./../../../../public/index.html">
-                <img src="../../../assets/img/left.png" alt="" id="left">
+            <a href="./../../../public/index.html">
+                <img src="../../assets/img/left.png" alt="Voltar" id="left">
             </a>
         </div>
-        <img src="../../../assets/img/logo.png" alt="">
+        <img src="../../assets/img/logo.png" alt="Logo">
     </header>
     <main>
-        <h1>Possui uma conta?</h1>
+        <h1 id="title">Possui uma conta?</h1>
         <form id="loginForm">
             <input type="email" name="email" id="email" placeholder="Email">
             <input type="password" name="password" id="password" placeholder="Senha">
-            <a href="">
+            <a href="" id="forgotPasswordLink">
                 <h2>Esqueci minha senha</h2>
             </a>
-            <input type="submit" value="Entrar" placeholder="Entrar">
+            <input type="submit" value="Entrar">
         </form>
         <p>
             Não possui uma conta?
-            <a href="./../../register/register-customer/1-customer-registration/index.html">
+            <a href="#" id="registerLink">
                 <span class="register__anchor">Cadastre-se</span>
             </a>
         </p>

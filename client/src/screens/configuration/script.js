@@ -10,25 +10,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const checkUserTypeAndSession = async () => {
         try {
-            // Observação: Não funciona!! Então usaremos dados predefinidos para continuar com a progressão do projeto
 
-            const response = await fetch('http://localhost:3000/api/auth/get-session');
-            if (response.status === 401) {
-                console.error('No active session');
-                return;
+            // const response = await fetch('http://localhost:3000/api/auth/get-session');
+            // if (response.status === 401) {
+            //     console.error('No active session');
+            //     return;
+            // }
+            // const data = await response.json();
+
+            // if (!data.user) {
+            //     console.error('Nenhum usuário logado');
+            //     return;
+            // }
+
+            // userId = data.user.id;
+            // userType = data.user.userType;
+
+            email = localStorage.getItem('email');
+            userId = localStorage.getItem('userId');
+            userType = localStorage.getItem('userType');
+
+            if (!email) {
+                alert("Nenhum usuário logado detectado!");
+                window.location.href = './../../../public/index.html';
             }
-            const data = await response.json();
-
-            if (!data.user) {
-                console.error('Nenhum usuário logado');
-                return;
-            }
-            userId = data.user.id;
-            userType = data.user.userType;
-
-            // email = localStorage.getItem('email');
-            // userId = localStorage.getItem('userId');
-            // userType = localStorage.getItem('userType');
 
             alert("" + email + userId + userType);
 
@@ -82,9 +87,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     switchProfileButton.addEventListener('click', () => {
         if (userType === 'customer') {
-            window.location.href = './../login/login-service-provider/index.html';
+            localStorage.setItem('userType', 'service_provider');
+            window.location.href = '../main/service-provider/1-service-provider-home/index.html';
         } else {
-            window.location.href = './../login/login-customer/index.html';
+            localStorage.setItem('userType', 'customer');
+            window.location.href = '../main/customer/1-customer-home/index.html';
         }
     });
 

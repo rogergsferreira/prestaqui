@@ -1,107 +1,97 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="../../../../styles/status.css">
-        <link rel="stylesheet" href="../../../../styles/category.css">
-        <link rel="stylesheet" href="../../../../styles/reset.css">
-        <link rel="stylesheet" href="../../../../styles/util.css">
-        <!-- <link rel="stylesheet" href="../../../../styles/styles.css"> -->
-        <link rel="stylesheet" href="./styles.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Página principal</title>
-    </head>
-    <body>
-        <nav class="nav-items" id="nav-items">
-            <div class="container__button__close" id="close__button">
-                <img src="../../../../assets/img/Close.png" alt="">
-            </div>
-            <ul class="navbar__option">
-                <li class="nav-item">
-                    <a href="#">Ver perfil</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Notificações</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Criar novo perfil</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Avaliações</a>
-                </li>
-                <li class="nav-item logoff">
-                    <a href="#">Desconectar</a>
-                </li>
-            </ul>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../../../styles/status.css">
+    <link rel="stylesheet" href="../../../../styles/category.css">
+    <link rel="stylesheet" href="../../../../styles/reset.css">
+    <link rel="stylesheet" href="../../../../styles/util.css">
+    <!-- <link rel="stylesheet" href="../../../../styles/styles.css"> -->
+    <link rel="stylesheet" href="./styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página principal</title>
+</head>
+
+<body>
+    <nav class="nav-items" id="nav-items">
+        <div class="container__button__close" id="close__button">
+            <img src="../../../../assets/img/Close.png" alt="">
+        </div>
+        <ul class="navbar__option">
+            <li class="nav-item">
+                <a href="#">Ver perfil</a>
+            </li>
+            <li class="nav-item">
+                <a href="#">Notificações</a>
+            </li>
+            <li class="nav-item">
+                <a href="#">Criar novo perfil</a>
+            </li>
+            <li class="nav-item">
+                <a href="#">Avaliações</a>
+            </li>
+            <li class="nav-item logoff">
+                <a href="#">Desconectar</a>
+            </li>
+        </ul>
         </div>
     </nav>
-        <header>
-            <!-- <div id="widgets">
+    <header>
+        <!-- <div id="widgets">
                 <a href="./../../../../screens/configuration/index.html">
                     <img src="../../../../assets/img/upload.png" alt="" id="left">
                 </a>
             </div> -->
-            <div id="hamburguer-menu">
-                <img src="../../../../assets/img/Default.png" alt="">
-            </div>
-            <figure class="logo__container">
-                <img class="prestaqui__logo" src="../../../../assets/img/logo.png" alt="Logotipo PrestAqui em um fundo preto, destacando-se com um design minimalista e elegante.">
+        <div id="hamburguer-menu">
+            <img src="../../../../assets/img/Default.png" alt="">
+        </div>
+        <figure class="logo__container">
+            <img class="prestaqui__logo" src="../../../../assets/img/logo.png"
+                alt="Logotipo PrestAqui em um fundo preto, destacando-se com um design minimalista e elegante.">
+        </figure>
+        <div class="user__welcome">
+            <figure class="user__profile__container">
+                <img id="user__profile" src="https://robohash.org/exemplo" alt="">
             </figure>
-            <div class="user__welcome">
-                <figure class="user__profile__container">
-                    <img id="user__profile" src="https://robohash.org/exemplo" alt="">
-                </figure>
-                <h1>Olá,
-                    <span id="user__name">NomeDoCliente
-                    </h1>
-                    <form>
-                        <div class="dropdown">
-                            <button type="button" class="dropdown-btn" aria-expanded="false">Status</button>
-                            <div class="dropdown-menu">
-                                <label for="status-embusca">
-                                    <input
-                                        type="radio"
-                                        id="status-embusca"
-                                        name="status"
-                                        value="embusca"
-                                    >
-                                    Em busca
-                                </label>
-                                <label for="status-agendado">
-                                    <input
-                                        type="radio"
-                                        id="status-agendado"
-                                        name="status"
-                                        value="agendado"
-                                    >
-                                    Agendado
-                                </label>
-                                <label for="status-todos">
-                                    <input
-                                        type="radio"
-                                        id="status-todos"
-                                        name="status"
-                                        value="todos"
-                                    >
-                                    Todos
-                                </label>
-                            </div>
-                        </div>
-                    </form>
+            <h1>Olá,
+                <span id="user__name">NomeDoCliente
+            </h1>
+            <form>
+                <div class="dropdown">
+                    <button type="button" class="dropdown-btn" aria-expanded="false">Status</button>
+                    <div class="dropdown-menu">
+                        <label for="status-embusca">
+                            <input type="radio" id="status-embusca" name="status" value="embusca">
+                            Em busca
+                        </label>
+                        <label for="status-agendado">
+                            <input type="radio" id="status-agendado" name="status" value="agendado">
+                            Agendado
+                        </label>
+                        <label for="status-todos">
+                            <input type="radio" id="status-todos" name="status" value="todos">
+                            Todos
+                        </label>
+                    </div>
                 </div>
-            </header>
-            <main class="scheduling__info">
-                <div class="scheduling__actions">
-                    <button class="history">
-                        Histórico
-                    </button>
-                    <button class="new__scheduling">
-                        Novo agendamento
-                    </button>
-                </div>
-                <section class="scheduling__container">
-                    <!-- Os agendamentos serão adicionados aqui dinamicamente --></section>
-            </main>
-            <script src="script.js"></script>
-        </body>
-    </html>
+            </form>
+        </div>
+    </header>
+    <main class="scheduling__info">
+        <div class="scheduling__actions">
+            <button class="history">
+                Histórico
+            </button>
+            <button class="new__scheduling">
+                Novo agendamento
+            </button>
+        </div>
+        <section class="scheduling__container">
+            <!-- Os agendamentos serão adicionados aqui dinamicamente -->
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+
+</html>

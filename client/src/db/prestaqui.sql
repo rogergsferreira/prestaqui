@@ -53,7 +53,7 @@ CREATE TABLE `customer` (
 -- Creating the `solicitation` table
 CREATE TABLE `solicitation` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `service_provider_id` INT DEFAULT -1,
+    `service_provider_id` INT NULL,
     `customer_id` INT NOT NULL,
     `service_date` DATE NOT NULL,
     `category_id` INT NOT NULL,
