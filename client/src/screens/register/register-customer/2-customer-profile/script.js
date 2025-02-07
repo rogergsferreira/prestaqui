@@ -24,14 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            customerData.avatarPath = imagePath;
+            customerData.avatar_path = imagePath;
             customerData.userType = 'customer';
-
-            console.log('Dados do cliente (Segunda Tela):', customerData); // Adiciona um console.log
-            console.log('Nome:', customerData.name); // Verifique se o nome não é nulo
-            console.log('Telefone:', customerData.phone); // Console log the phone
-            console.log('Endereço:', customerData.street_address); // Console log the address
-            console.log('Complemento:', customerData.complement); // Console log the complement
 
             try {
                 const response = await fetch('http://localhost:3000/api/auth/register', {

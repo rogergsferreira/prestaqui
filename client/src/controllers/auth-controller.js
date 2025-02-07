@@ -114,6 +114,7 @@ async function register(req, res) {
 // Função de login
 async function login(req, res) {
     const { email, password, userType } = req.body;
+    const data = { email, password, userType };
     const tableName = userType === 'service_provider' ? 'service_provider' : 'customer';
 
     try {
@@ -128,7 +129,13 @@ async function login(req, res) {
                 if (err) return res.status(500).send('Erro no banco de dados');
                 if (userTypeResult.length === 0) return res.status(400).send('Usuário não registrado como ' + userType);
 
-                res.status(200).json({ message: 'Login realizado com sucesso!', userId });
+                const responseData = {
+                    id: userId,
+                    email: result[0].email,
+                    userType: userType
+                };
+
+                res.status(200).json(responseData);
             });
         });
     } catch (error) {

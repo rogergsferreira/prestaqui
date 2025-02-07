@@ -86,7 +86,7 @@ main {
 }
 
 form {
-    width:50%;
+    width: 50%;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -94,15 +94,15 @@ form {
     margin-left: 20px;
 }
 
-input{
+input {
     height: 40px;
     border-radius: 5px;
     border: 0;
     font-size: .9em;
-    background: var(--input-type-text-color); 
+    background: var(--input-type-text-color);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
-    color: #153973;
+    color: #304261;
     text-indent: 20px;
     font-weight: bold;
     width: 200px;
@@ -149,10 +149,10 @@ form input#state {
     width: 250px;
     font-size: .9em;
 }
+
 .separator__form {
     display: flex;
     gap: 20px;
-    background-color: red;
 }
 
 @media (min-width:500px) {
@@ -193,7 +193,7 @@ form input#state {
     }
 
     #atualizar {
-        margin-left:30%;
+        margin-left: 30%;
     }
 }
 
@@ -248,8 +248,3 @@ form input#state {
         width: 100%;
     }
 }
-    
-
-
-
-

@@ -40,6 +40,7 @@ async function getUserById(req, res) {
 }
 
 async function updateUser(req, res) {
+    const queryAsync = util.promisify(db.query).bind(db);
     const { id } = req.params;
     const {
         newEmail,
@@ -163,57 +164,54 @@ async function deleteUser(req, res) {
                 return db.rollback(() => res.status(400).send('User still has active services'));
             }
 
-            try {
-                const deleteHasCategoryQuery = `
-                    DELETE hc FROM has_category hc
-                    JOIN service_provider sp ON hc.service_provider_id = sp.id
-                    WHERE sp.user_id = ?`;
+            const deleteHasCategoryQuery = `
+                DELETE hc FROM has_category hc
+                JOIN service_provider sp ON hc.service_provider_id = sp.id
+                WHERE sp.user_id = ?`;
 
-                db.query(deleteHasCategoryQuery, [id], (err) => {
-                    if (err) return handleError(err, 'Failed to delete from has_category');
+            db.query(deleteHasCategoryQuery, [id], (err) => {
+                if (err) return handleError(err, 'Failed to delete from has_category');
 
-                    const deleteSchedulingQuery = `
-                        DELETE FROM solicitation
-                        WHERE service_provider_id IN (SELECT id FROM service_provider WHERE user_id = ?)
-                        OR customer_id IN (SELECT id FROM customer WHERE user_id = ?)`;
+                const deleteSchedulingQuery = `
+                    DELETE FROM solicitation
+                    WHERE service_provider_id IN (SELECT id FROM service_provider WHERE user_id = ?)
+                    OR customer_id IN (SELECT id FROM customer WHERE user_id = ?)`;
 
-                    db.query(deleteSchedulingQuery, [id, id], (err) => {
-                        if (err) return handleError(err, 'Failed to delete from solicitation');
+                db.query(deleteSchedulingQuery, [id, id], (err) => {
+                    if (err) return handleError(err, 'Failed to delete from solicitation');
 
-                        const deleteServiceProviderQuery = `DELETE FROM service_provider WHERE user_id = ?`;
-                        db.query(deleteServiceProviderQuery, [id], (err) => {
-                            if (err) return handleError(err, 'Failed to delete from service_provider');
+                    const deleteServiceProviderQuery = `DELETE FROM service_provider WHERE user_id = ?`;
+                    db.query(deleteServiceProviderQuery, [id], (err) => {
+                        if (err) return handleError(err, 'Failed to delete from service_provider');
 
-                            const deleteCustomerQuery = `DELETE FROM customer WHERE user_id = ?`;
-                            db.query(deleteCustomerQuery, [id], (err) => {
-                                if (err) return handleError(err, 'Failed to delete from customer');
+                        const deleteCustomerQuery = `DELETE FROM customer WHERE user_id = ?`;
+                        db.query(deleteCustomerQuery, [id], (err) => {
+                            if (err) return handleError(err, 'Failed to delete from customer');
 
-                                const deleteUserQuery = `DELETE FROM user WHERE id = ?`;
-                                db.query(deleteUserQuery, [id], (err, result) => {
-                                    if (err || result.affectedRows === 0) {
-                                        return db.rollback(() =>
-                                            res.status(err ? 500 : 404).send(err ? 'Failed to delete user' : 'User not found')
-                                        );
+                            const deleteUserQuery = `DELETE FROM user WHERE id = ?`;
+                            db.query(deleteUserQuery, [id], (err, result) => {
+                                if (err || result.affectedRows === 0) {
+                                    return db.rollback(() =>
+                                        res.status(err ? 500 : 404).send(err ? 'Failed to delete user' : 'User not found')
+                                    );
+                                }
+
+                                db.commit((commitError) => {
+                                    if (commitError) {
+                                        return db.rollback(() => res.status(500).send('Failed to commit transaction'));
                                     }
 
-                                    db.commit((commitError) => {
-                                        if (commitError) {
-                                            return db.rollback(() => res.status(500).send('Failed to commit transaction'));
-                                        }
-
-                                        res.send('User deleted successfully');
-                                    });
+                                    res.send('User deleted successfully');
                                 });
                             });
                         });
                     });
                 });
-            } catch (error) {
-                return handleError(error, 'Error during deletion process');
-            }
+            });
         });
     });
 }
+
 
 async function addCategories(req, res) {
     const { userId, categories } = req.body;
