@@ -701,13 +701,17 @@ async function getServicesByCustomerId(req, res) {
 async function cancelServiceById(req, res) {
     const { id } = req.params;
 
-    db.query('UPDATE solicitation SET status = ? WHERE id = ?', ['Cancelado', id], (err, result) => {
+    db.query('UPDATE solicitation SET status = ?, appointment_status = ? WHERE id = ?', ['Cancelado', true, id], (err, result) => {
         if (err) {
             console.error('Erro do banco de dados:', err);
-            return res.status(500).send('Erro no servidor');
+            return res.status(500).json({ success: false, message: 'Erro no servidor' });
         }
 
-        res.send('Serviço cancelado com sucesso');
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ success: false, message: 'Solicitação não encontrada.' });
+        }
+
+        res.json({ success: true, message: 'Serviço cancelado com sucesso!' });
     });
 }
 
@@ -799,6 +803,30 @@ async function submitSolicitation(req, res) {
     });
 };
 
+async function updateServiceStatus(req, res) {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const validStatuses = ['Em busca', 'Agendado', 'Em andamento', 'Concluído', 'Cancelado'];
+
+    if (!validStatuses.includes(status)) {
+        return res.status(400).json({ success: false, message: 'Status inválido.' });
+    }
+
+    db.query('UPDATE solicitation SET status = ? WHERE id = ?', [status, id], (err, result) => {
+        if (err) {
+            console.error('Erro do banco de dados:', err);
+            return res.status(500).json({ success: false, message: 'Erro no servidor' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ success: false, message: 'Solicitação não encontrada.' });
+        }
+
+        res.json({ success: true, message: 'Status atualizado com sucesso!' });
+    });
+}
+
 
 // Routers
 const authRouter = express.Router();
@@ -828,6 +856,7 @@ servicesRouter.get('/get-services/:customer_id', getServicesByCustomerId);
 servicesRouter.put('/cancel-service/:id', cancelServiceById);
 servicesRouter.put('/complete-service/:id', completeServiceById);
 servicesRouter.post('/submitSolicitation', submitSolicitation);
+servicesRouter.put('/update-status/:id', updateServiceStatus);
 
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
