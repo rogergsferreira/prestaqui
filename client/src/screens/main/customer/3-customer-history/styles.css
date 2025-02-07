@@ -327,3 +327,14 @@ color: white;
     background-color: #D9534F !important;
     margin-top: 20px;
 }
+
+
+
+@media(min-width: 419px) {
+    .nav-items {
+        align-items: center;
+        width: 50%;
+        transform: translateX(500%);
+        transition: .9s ease-in-out;
+    }
+}
