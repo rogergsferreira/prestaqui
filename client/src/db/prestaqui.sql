@@ -71,3 +71,13 @@ CREATE TABLE `solicitation` (
     FOREIGN KEY (`service_provider_id`) REFERENCES `service_provider`(`id`),
     FOREIGN KEY (`customer_id`) REFERENCES `customer`(`id`)
 );
+-- Creating the `service_provider_requests` table
+CREATE TABLE `service_provider_requests` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `solicitation_id` INT NOT NULL,
+    `customer_id` INT NOT NULL,
+    `service_provider_id` INT NOT NULL,
+    FOREIGN KEY (`solicitation_id`) REFERENCES `solicitation`(`id`),
+    FOREIGN KEY (`customer_id`) REFERENCES `customer`(`id`),
+    FOREIGN KEY (`service_provider_id`) REFERENCES `service_provider`(`id`)
+);
